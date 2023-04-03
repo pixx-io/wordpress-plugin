@@ -1,0 +1,17 @@
+{
+    "[php]": {
+        "editor.defaultFormatter": "valeryanm.vscode-phpsab"
+    },
+    "phpsab.standard": "WordPress",
+    "phpsab.snifferEnable": true, // disable this if you don't need suggestions
+    "phpsab.autoRulesetSearch": false,
+    "phpsab.snifferShowSources": true,
+    "cSpell.words": [
+        "ABSPATH",
+        "pagenow",
+        "pixx.io",
+        "pixxio",
+        "plupload",
+        "sideload"
+    ]
+}

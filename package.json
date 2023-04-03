@@ -1,0 +1,23 @@
+{
+  "name": "pixxio",
+  "version": "0.1.0",
+  "description": "The official WordPress plugin for pixx.io. Bring Digital Asset Management to your WordPress sites by importing assets into your media library.",
+  "author": "48DESIGN GmbH",
+  "license": "GPL-2.0-or-later",
+  "keywords": [],
+  "homepage": "https://www.pixx.io",
+  "repository": "https://github.com/48design/wp-pixxio",
+  "bugs": "https://www.pixx.io/kontakt",
+  "devDependencies": {
+    "@wordpress/scripts": "^26.1.0"
+  },
+  "scripts": {
+    "lint:pkg-json": "wp-scripts lint-pkg-json ./",
+    "lint:js": "wp-scripts lint-js ./js",
+    "lint:css": "wp-scripts lint-style ./css",
+    "lint": "npm run lint:pkg-json && npm run lint:js && npm run lint:css",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "plugin-zip": "wp-scripts plugin-zip",
+    "dist": "npm run lint && npm run plugin-zip"
+  }
+}
