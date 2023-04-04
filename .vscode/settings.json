@@ -14,5 +14,6 @@
         "pixxio",
         "plupload",
         "sideload"
-    ]
+    ],
+    "prettier.configPath": "./node_modules/@wordpress/prettier-config/lib/index.js",
 }
