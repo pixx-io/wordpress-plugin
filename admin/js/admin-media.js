@@ -160,29 +160,33 @@
 
 		if ( messageEvent?.data?.method === 'downloadFiles' ) {
 			$.ajax( {
-				// @TODO: actually handle progress or remove
 				xhr() {
 					const xhr = new window.XMLHttpRequest();
-					xhr.upload.addEventListener(
-						'progress',
-						function ( event ) {
-							// console.log( event );
-							if ( event.lengthComputable ) {
-								// const percentComplete =
-								// 	event.loaded / event.total;
-								//Do something with upload progress here
-							}
-						},
-						false
-					);
+					const jAjax = this;
+					let afterUploadFakeProgress;
 
 					xhr.addEventListener(
 						'progress',
 						function ( event ) {
-							if ( event.lengthComputable ) {
-								// const percentComplete =
-								// 	event.loaded / event.total;
-								//Do something with download progress
+							const responseLines = event.currentTarget.responseText.split("\n").filter(Boolean);
+							const lastResponse = JSON.parse( responseLines[responseLines.length - 1] );
+							if ( lastResponse?.success === undefined ) {
+								if( lastResponse?.progress !== undefined ) {
+									pxSend( 'setDownloadProgress', [lastResponse.progress * 0.5] );
+									if( lastResponse.progress === 100 ) {
+										lastResponse.progress *= 0.5;
+										afterUploadFakeProgress = setInterval(function() {
+											lastResponse.progress += 3;
+											console.log( 'fake', lastResponse.progress );
+											pxSend( 'setDownloadProgress', [ lastResponse.progress ] );
+										}, 1000);
+									}
+								} else {
+									console.error(`Unexpected response: ${lastResponse}`);
+								}
+							} else {
+								jAjax.success(lastResponse);
+								clearInterval(afterUploadFakeProgress);
 							}
 						},
 						false
@@ -217,10 +221,8 @@
 							uploadSuccess( fileObj, data.data.id ); // eslint-disable-line no-undef
 						}
 					}
-				},
+				}
 			} );
-			// pxSend( 'setDownloadProgress', [0] );
 		}
-		// window.setTimeout( () => pxSend( 'setDownloadComplete' ), 1000 );
 	} );
 } )( jQuery ); // eslint-disable-line no-undef

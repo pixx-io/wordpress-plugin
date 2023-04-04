@@ -38,6 +38,35 @@ class MediaHandler extends Singleton {
 	}
 
 	/**
+	 * Returns a chunked response by flushing successive JSON responses containing the upload progress
+	 * 
+	 * @param void $resource 
+	 * @param double $download_size 
+	 * @param double $downloaded_size 
+	 * @param double $upload_size 
+	 * @param double $uploaded_size 
+	 * @return void 
+	 */
+	function downloadProgress ($resource, $download_size, $downloaded_size, $upload_size, $uploaded_size) {
+		static $previousProgress = 0;
+		
+		if ( $download_size == 0 )
+			$progress = 0;
+		else
+			$progress = round( $downloaded_size * 100 / $download_size );
+		
+		if ( $progress > $previousProgress) {
+			if( ! headers_sent() ) {
+				header('Content-Type: application/json');
+			}
+			echo json_encode( array( 'progress' => $progress ) ) . "\n";
+			ob_flush();
+			flush();
+			$previousProgress = $progress;
+		}
+	}
+	
+	/**
 	 * Downloads an image from pixx.io and adds it to the media library, returning the new attachment ID.
 	 *
 	 * @since 1.0.0
@@ -53,25 +82,28 @@ class MediaHandler extends Singleton {
 			return new \WP_Error( 'invalid_url', __( 'Invalid image URL', 'pixxio' ) );
 		}
 
+		// Create a temporary file for the image
+		$tmp_file = wp_tempnam( $image_name );
+		$tmp_file_handle = fopen( $tmp_file, 'w' );
+		if ( ! $tmp_file ) {
+			return new \WP_Error( 'tmp_file_error', __( 'Error creating temporary file', 'pixxio' ) );
+		}
+
+		add_action('http_api_curl', function( $handle ) use ( $tmp_file_handle ) {
+			curl_setopt( $handle, CURLOPT_PROGRESSFUNCTION, array( static::class, 'downloadProgress' ) );
+			curl_setopt( $handle, CURLOPT_FILE, $tmp_file_handle );
+			curl_setopt( $handle, CURLOPT_NOPROGRESS, false );
+		}, PHP_INT_MAX );
+
 		// Download the image
 		$response = wp_remote_get( $image_url );
 
 		if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) ) {
 			return new \WP_Error( 'download_error', __( 'Error downloading image', 'pixxio' ) );
 		}
-
-		// Get the image content
-		$image_content = wp_remote_retrieve_body( $response );
-
-		// Create a temporary file for the image
-		$tmp_file = wp_tempnam( $image_name );
-		if ( ! $tmp_file ) {
-			return new \WP_Error( 'tmp_file_error', __( 'Error creating temporary file', 'pixxio' ) );
-		}
-
-		// Write the image content to the temporary file
-		file_put_contents( $tmp_file, $image_content );
-
+		
+		fclose( $tmp_file_handle );
+			
 		// Get the image's mime type
 		$filetype = wp_check_filetype( $image_name, null );
 
