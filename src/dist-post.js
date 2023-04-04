@@ -29,3 +29,5 @@ if (!fs.existsSync(distPath)) {
 
 zip.writeZip(path.join(distPath, outputFileName));
 fs.unlinkSync(inputFile);
+
+console.log(`\n🚀 Restructured and moved to ${path.join(distPath, outputFileName)}\n`);
