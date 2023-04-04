@@ -12,8 +12,8 @@ class Admin extends Singleton {
 	/**
 	 * Initialize admin functionality
 	 *
-     * @since 1.0.0
-     * 
+	 * @since 1.0.0
+	 *
 	 * @return void
 	 */
 	public static function init() {
@@ -23,8 +23,8 @@ class Admin extends Singleton {
 	/**
 	 * add hook callbacks
 	 *
-     * @since 1.0.0
-     * 
+	 * @since 1.0.0
+	 *
 	 * @return void
 	 */
 	private static function add_admin_hooks() {
@@ -34,7 +34,7 @@ class Admin extends Singleton {
 
 		add_action(
 			'admin_enqueue_scripts',
-			array( self::class, 'enqueue_scripts_and_styles' )
+			array( self::class, 'enqueue_scripts_and_styles' ),
 		);
 
 		add_action(
@@ -51,8 +51,8 @@ class Admin extends Singleton {
 	/**
 	 * Adds the "import from pixx.io" tab content
 	 *
-     * @since 1.0.0
-     * 
+	 * @since 1.0.0
+	 *
 	 * @return void
 	 */
 	public static function print_media_templates() {
@@ -70,8 +70,8 @@ class Admin extends Singleton {
 
 	/**
 	 * Adds the "import from pixx.io" button to the uploader
-     * 
-     * @since 1.0.0
+	 *
+	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
