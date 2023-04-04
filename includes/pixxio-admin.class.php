@@ -1,6 +1,6 @@
 <?php
 /**
- * File download handling
+ * Admin backend related functionality
  *
  * @package Pixxio
  * @since 1.0.0
@@ -8,6 +8,6 @@
 
 namespace Pixxio;
 
-class Downloader extends Singleton {
+class Admin extends Singleton {
     
 }

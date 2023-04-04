@@ -13,7 +13,9 @@
 
 namespace Pixxio;
 
-require( 'includes/pixxio-singleton.class.php' );
+use TypeError;
+
+require_once 'includes/pixxio-singleton.class.php';
 
  /**
   * Pixxio Plugin Main Class
@@ -21,11 +23,12 @@ require( 'includes/pixxio-singleton.class.php' );
   * @package Pixxio
   * @since 1.0.0
   * @method static i18n i18n()
+  * @method static Downloader Downloader()
+  * @method static Admin Admin()
   */
 class Pixxio extends Singleton {
 	private static $init = false;
 
-	public static $i18n;
 	/**
 	 * Pixxio plugin directory
 	 */
@@ -35,6 +38,12 @@ class Pixxio extends Singleton {
 	 */
 	public const ENTRY = __FILE__;
 
+	public static $version = '0.0.0';
+
+	/**
+	 * @param string $className
+	 * @return void
+	 */
 	private static function autoload( $className ) {
 		if ( substr( $className, 0, 7 ) !== 'Pixxio\\' ) {
 			return;
@@ -52,9 +61,9 @@ class Pixxio extends Singleton {
 	public static function __callStatic( $name, $arguments ) {
 		$className = 'Pixxio\\' . $name;
 		if ( class_exists( $className ) ) {
-			$instance = $className::get_instance();
-			$instanceClass = get_class($instance);
-			if ( get_class($instance) === $className ) {
+			$instance      = $className::get_instance();
+			$instanceClass = get_class( $instance );
+			if ( get_class( $instance ) === $className ) {
 				return $instance;
 			} else {
 				throw new \Exception( 'Class name case mismatch: Did you mean to use Pixxio::' . substr( $instanceClass, 7 ) . '?' );
@@ -62,10 +71,23 @@ class Pixxio extends Singleton {
 		}
 	}
 
+	/**
+	 * Register autoload and initialize sub classes
+	 *
+	 * @return void
+	 * @throws TypeError
+	 */
 	public static function init() {
 		if ( static::$init ) {
 			return;
 		}
+
+		add_action( 'plugins_loaded', function() {
+			if( !function_exists('get_plugin_data') ){
+				require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+			}
+			static::$version = \get_plugin_data( __FILE__, false, false )['Version'];
+		} );
 
 		spl_autoload_register( array( static::class, 'autoload' ) );
 
@@ -80,24 +102,25 @@ add_action(
 	'admin_enqueue_scripts',
 	function() {
 		wp_enqueue_script(
-			'pixxio-extend-media-picker',
-			plugins_url( 'admin/js/extend-media-picker.js', __FILE__ ),
+			'pixxio-admin-media',
+			plugins_url( 'admin/js/admin-media.js', __FILE__ ),
 			array( 'media-views' ),
-			null,
+			Pixxio::$version,
 			true
 		);
 
 		wp_enqueue_style(
-			'pixxio-extend-media-picker',
-			plugins_url( 'admin/css/extend-media-picker.css', __FILE__ ),
-			array( 'media-views' )
+			'pixxio-admin-media',
+			plugins_url( 'admin/css/admin-media.css', __FILE__ ),
+			array( 'media-views' ),
+			Pixxio::$version
 		);
 
 		add_action(
 			'print_media_templates',
 			function() {
 				// @TODO: iframe URL from user locale
-				$locale = Pixxio::i18n()->getLocale();
+				$locale      = Pixxio::i18n()->getLocale();
 				$iframe_lang = 'en';
 				if ( substr( $locale, 0, 3 ) === 'de_' ) {
 					$iframe_lang = 'de';
@@ -189,7 +212,7 @@ function download_and_add_image_to_media_library( $image_url, $image_name, $post
 }
 
 // Register the AJAX action
-add_action( 'wp_ajax_download_image_from_url', 'download_image_from_url_ajax_handler' );
+add_action( 'wp_ajax_download_image_from_url', 'Pixxio\download_image_from_url_ajax_handler' );
 
 function download_image_from_url_ajax_handler() {
 	 // Check for permissions and validate the nonce
@@ -270,4 +293,4 @@ function add_attachment_json_pixxio_id( $response, $attachment, $meta ) {
 	 return $response;
 
 };
-add_filter( 'wp_prepare_attachment_for_js', 'add_attachment_json_pixxio_id', 10, 3 );
+add_filter( 'wp_prepare_attachment_for_js', 'Pixxio\add_attachment_json_pixxio_id', 10, 3 );

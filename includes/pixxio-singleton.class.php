@@ -1,4 +1,11 @@
 <?php
+/**
+ * Singleton abstract class
+ *
+ * @package Pixxio
+ * @since 1.0.0
+ */
+
 namespace Pixxio;
 
 abstract class Singleton {
@@ -9,7 +16,7 @@ abstract class Singleton {
 	/**
 	 * returns the Singleton instance
 	 *
-	 * @return static::class
+	 * @return static
 	 */
 	final public static function get_instance() {
 		$class = get_called_class();
