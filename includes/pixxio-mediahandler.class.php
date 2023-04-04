@@ -114,15 +114,26 @@ class MediaHandler extends Singleton {
 			wp_send_json_error( 'Permission denied' );
 		}
 
-		$pixxio_id = (int) $_POST['files'][0][0]['id'];
+		$pixxio_id  = (int) $_POST['files'][0][0]['id'];
+		$image_url  = esc_url_raw( $_POST['files'][0][0]['downloadURL'] );
+		$mediaspace = parse_url( $image_url, PHP_URL_HOST );
 
-		// check if an attachment for this pixxio ID already exists
+		// check if an attachment for this pixxio ID and mediaspace already exists
 		$args = array(
 			'post_type'      => 'attachment',
 			'post_status'    => 'inherit',
 			'posts_per_page' => 1,
-			'meta_key'       => 'pixxio_id',
-			'meta_value'     => $pixxio_id,
+			'meta_query'     => array(
+				'relation' => 'AND',
+				array(
+					'key'   => 'pixxio_id',
+					'value' => $pixxio_id,
+				),
+				array(
+					'key'   => 'pixxio_mediaspace',
+					'value' => $mediaspace,
+				),
+			),
 		);
 
 		$attachment_id = null;
@@ -131,23 +142,19 @@ class MediaHandler extends Singleton {
 		$attachments     = get_posts( $args );
 		$returnMediaItem = isset( $_POST['returnMediaItem'] ) && $_POST['returnMediaItem'] == 'true';
 
+		// Linked attachment is already present
+		// @TODO: update handling when attachment has been modified?
 		if ( $attachments && count( $attachments ) ) {
 			$attachment_id = $attachments[0]->ID;
 			$existed       = true;
 		} else {
-			// Check if the image URL is set
-			$imageUrl = sanitize_url( $_POST['files'][0][0]['downloadURL'] );
-			if ( ! isset( $imageUrl ) || empty( $imageUrl ) ) {
-				wp_send_json_error( 'Image URL not provided' ); // @TODO: translatable string
-			}
-
 			// Process the POST variable containing the image URL
-			$image_url = esc_url_raw( $imageUrl );
+			$image_url = esc_url_raw( $image_url );
 
-			// Set a default image name (you can customize this)
-			$image_name = $imageUrl = sanitize_file_name( $_POST['files'][0][0]['fileName'] );
+			// Set image name
+			$image_name = sanitize_file_name( $_POST['files'][0][0]['fileName'] );
 
-			// Call the download_to_media_library() function
+			// Trigger download
 			$result = self::download_to_media_library( $image_url, $image_name );
 
 			// Check for errors and return the result as a JSON response
@@ -155,7 +162,10 @@ class MediaHandler extends Singleton {
 				wp_send_json_error( $result->get_error_message() );
 			} else {
 				$attachment_id = $result;
+				$timestamp     = get_post_field( 'post_modified_gmt', $attachment_id );
 				update_post_meta( $attachment_id, 'pixxio_id', $pixxio_id );
+				update_post_meta( $attachment_id, 'pixxio_import_gmt', $timestamp );
+				update_post_meta( $attachment_id, 'pixxio_mediaspace', $mediaspace );
 			}
 		}
 

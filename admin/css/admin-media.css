@@ -25,3 +25,7 @@
   bottom: -0.2rem;
   border-radius: 50%;
 }
+
+.media-modal #pixxio-uploader {
+  display: none;
+}

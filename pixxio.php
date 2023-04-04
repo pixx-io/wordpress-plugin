@@ -8,6 +8,7 @@
  * Author URI: https://48design.com
  * Text Domain: pixxio
  * Requires PHP: 7.4
+ * Requires at least: 6.0
  *
  */
 
