@@ -13,6 +13,8 @@ class i18n extends Singleton {
 	/**
 	 * load plugin translations
 	 * 
+     * @since 1.0.0
+     * 
 	 * @return void 
 	 */
 	public static function init() {
@@ -31,6 +33,8 @@ class i18n extends Singleton {
 	/**
 	 * Return the current user's locale, falling back to the site locale
 	 * 
+     * @since 1.0.0
+     * 
 	 * @return string 
 	 */
 	public function getLocale() {

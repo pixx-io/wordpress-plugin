@@ -185,7 +185,7 @@
 				type: 'POST',
 				url: ajaxurl, // eslint-disable-line no-undef
 				data: {
-					action: 'download_image_from_url',
+					action: 'download_pixxio_image',
 					files: messageEvent?.data?.parameters,
 					returnMediaItem: !! mediaItems,
 				},

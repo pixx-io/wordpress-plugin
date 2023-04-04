@@ -16,6 +16,8 @@ abstract class Singleton {
 	/**
 	 * returns the Singleton instance
 	 *
+     * @since 1.0.0
+     * 
 	 * @return static
 	 */
 	final public static function get_instance() {
