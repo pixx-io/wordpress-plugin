@@ -40,6 +40,8 @@ class MediaHandler extends Singleton {
 	/**
 	 * Returns a chunked response by flushing successive JSON responses containing the upload progress
 	 * 
+	 * @since 1.0.0
+	 * 
 	 * @param void $resource 
 	 * @param double $download_size 
 	 * @param double $downloaded_size 
