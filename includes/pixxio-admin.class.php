@@ -100,19 +100,30 @@ class Admin extends Singleton {
 	 * @return void
 	 */
 	public static function enqueue_scripts_and_styles() {
-		wp_enqueue_script(
-			'pixxio-admin-media',
-			plugins_url( 'admin/js/admin-media.js', Pixxio::MAIN ),
-			array( 'media-views' ),
-			Pixxio::$version,
-			true
-		);
+		global $pagenow;
 
-		wp_enqueue_style(
-			'pixxio-admin-media',
-			plugins_url( 'admin/css/admin-media.css', Pixxio::MAIN ),
-			array( 'media-views' ),
-			Pixxio::$version
-		);
+		// only on specific pages or if media already enqueued
+		$media_pages    = array( 'upload.php', 'media-new.php', 'post.php' );
+		$media_enqueued = did_action( 'wp_enqueue_media' );
+
+		if ( $media_enqueued || in_array( $pagenow, $media_pages ) ) {
+			// make sure all media related functions and files are available
+			wp_enqueue_media();
+
+			wp_enqueue_script(
+				'pixxio-admin-media',
+				plugins_url( 'admin/js/admin-media.js', Pixxio::MAIN ),
+				array( 'media-views' ),
+				Pixxio::$version,
+				true
+			);
+
+			wp_enqueue_style(
+				'pixxio-admin-media',
+				plugins_url( 'admin/css/admin-media.css', Pixxio::MAIN ),
+				array( 'media-views' ),
+				Pixxio::$version
+			);
+		}
 	}
 }

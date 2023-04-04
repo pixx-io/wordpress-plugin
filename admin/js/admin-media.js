@@ -51,13 +51,21 @@
 			}
 		},
 	};
-
 	// add class in Library view
 	wp.media.view.Attachment.Library = wp.media.view.Attachment.Library.extend(
 		{
 			className() {
-				let className =
+				let parentClassName =
 					wp.media.view.Attachment.Library.__super__.className;
+
+				if (
+					! parentClassName ||
+					typeof parentClassName === 'function'
+				) {
+					parentClassName = 'attachment';
+				}
+
+				let className = parentClassName;
 				const fromPixxio = this.model.get( 'pixxio_id' ) !== undefined;
 				if ( fromPixxio ) {
 					className += ' pixxio';

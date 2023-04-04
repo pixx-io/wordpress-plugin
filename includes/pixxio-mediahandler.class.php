@@ -163,6 +163,7 @@ class MediaHandler extends Singleton {
 			} else {
 				$attachment_id = $result;
 				$timestamp     = get_post_field( 'post_modified_gmt', $attachment_id );
+				// @TODO: get and store additional metadata from pixx.io
 				update_post_meta( $attachment_id, 'pixxio_id', $pixxio_id );
 				update_post_meta( $attachment_id, 'pixxio_import_gmt', $timestamp );
 				update_post_meta( $attachment_id, 'pixxio_mediaspace', $mediaspace );
