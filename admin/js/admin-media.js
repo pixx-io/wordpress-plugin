@@ -168,25 +168,39 @@
 					xhr.addEventListener(
 						'progress',
 						function ( event ) {
-							const responseLines = event.currentTarget.responseText.split("\n").filter(Boolean);
-							const lastResponse = JSON.parse( responseLines[responseLines.length - 1] );
+							const responseLines =
+								event.currentTarget.responseText
+									.split( '\n' )
+									.filter( Boolean );
+							const lastResponse = JSON.parse(
+								responseLines[ responseLines.length - 1 ]
+							);
 							if ( lastResponse?.success === undefined ) {
-								if( lastResponse?.progress !== undefined ) {
-									pxSend( 'setDownloadProgress', [lastResponse.progress * 0.5] );
-									if( lastResponse.progress === 100 ) {
+								if ( lastResponse?.progress !== undefined ) {
+									pxSend( 'setDownloadProgress', [
+										lastResponse.progress * 0.5,
+									] );
+									if ( lastResponse.progress === 100 ) {
 										lastResponse.progress *= 0.5;
-										afterUploadFakeProgress = setInterval(function() {
-											lastResponse.progress += 3;
-											console.log( 'fake', lastResponse.progress );
-											pxSend( 'setDownloadProgress', [ lastResponse.progress ] );
-										}, 1000);
+										afterUploadFakeProgress = setInterval(
+											function () {
+												lastResponse.progress += 3;
+
+												// console.log( 'fake', lastResponse.progress );
+												pxSend( 'setDownloadProgress', [
+													lastResponse.progress,
+												] );
+											},
+											1000
+										);
 									}
 								} else {
-									console.error(`Unexpected response: ${lastResponse}`);
+									// eslint-disable-next-line no-console
+									console.error( `Unexpected response: ${ lastResponse }` ); // prettier-ignore
 								}
 							} else {
-								jAjax.success(lastResponse);
-								clearInterval(afterUploadFakeProgress);
+								jAjax.success( lastResponse );
+								clearInterval( afterUploadFakeProgress );
 							}
 						},
 						false
@@ -221,7 +235,7 @@
 							uploadSuccess( fileObj, data.data.id ); // eslint-disable-line no-undef
 						}
 					}
-				}
+				},
 			} );
 		}
 	} );
