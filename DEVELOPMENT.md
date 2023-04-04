@@ -22,14 +22,22 @@ npm run lint
 
 To trigger autoformat for PHP files, after following the installation instructions for phpsab (see above), you can press `Alt+Shift+F`.
 
-Linting is currently not run automatically (neither PHP nor JS/CSS), but should be run from time to time to make sure we adhere to the WordPress coding standards.
+Linting is only run automatically when using `npm run dist`, but should be run from time to time to make sure we adhere to the WordPress coding standards.
 
 ## Bundling / Packaging / Distribution
 
 There's currently no bundling process involved as we're using vanilla JavaScript (with the exception of jQuery.ajax() for simplicity, as it's ). However, there are some scripts involved for creating the distribution .zip file by running
 
 ```shell
+npm run pack
+```
+
+or to run linting first and then pack:
+
+```shell
 npm run dist
 ```
 
 This will automatically update the plugin header in the main plugin file to reflect the version from `package.json` and bundle all plugin files into a single .zip file as `dist/pixxio-vX.X.X.zip`, ready for distribution and installation in a WordPress instance.
+
+You can use the npm scripts `pack-major`, `pack-minor`, `pack-patch` and `pack-major`, `pack-minor`, `pack-patch` to automatically bump the version using the corresponding `npm version` call, with or without prior linting and finally packing, all in one go.
