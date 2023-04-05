@@ -180,6 +180,10 @@
 			pixxioSdk = document.querySelector( 'iframe#pixxio_sdk' );
 		}
 
+		if ( ! Array.isArray( parameters ) ) {
+			parameters = [ parameters ];
+		}
+
 		pixxioSdk.contentWindow.postMessage(
 			{
 				receiver: 'pixxio-plugin-sdk',
@@ -190,6 +194,143 @@
 		);
 	}
 
+	function calculateProgress( progressData ) {
+		const fileMaxPart = 100 / progressData.totalFiles;
+		let progress = 0;
+		progressData.fileProgress.forEach( ( percent, file ) => {
+			// leave space for WP/PHP processing time after download
+			// by using only half the value and filling the rest
+			// with a fake progress value increased by an interval
+			progress += ( ( percent / 100 ) * fileMaxPart ) / 2;
+		} );
+
+		return Math.floor( progress + progressData.fakeProgress );
+	}
+
+	function downloadSingleFile( file, progressData ) {
+		$.ajax( {
+			xhr() {
+				const xhr = new window.XMLHttpRequest();
+				const jAjax = this;
+
+				xhr.addEventListener(
+					'progress',
+					function ( event ) {
+						const responseLines = event.currentTarget.responseText
+							.split( '\n' )
+							.filter( Boolean );
+						const lastResponse = JSON.parse(
+							responseLines[ responseLines.length - 1 ]
+						);
+						if ( lastResponse?.success === undefined ) {
+							if ( lastResponse?.progress !== undefined ) {
+								progressData.fileProgress.set(
+									file,
+									lastResponse.progress
+								);
+
+								pxSend( 'setDownloadProgress', [
+									calculateProgress( progressData ),
+								] );
+								if (
+									lastResponse.progress === 100 &&
+									progressData.fakeInterval === null
+								) {
+									console.log( 'set interval' );
+									progressData.fakeInterval = setInterval(
+										function () {
+											const progressSoFar =
+												calculateProgress(
+													progressData
+												);
+
+											progressData.fakeProgress +=
+												( 100 - progressSoFar ) /
+												( progressData.totalFiles -
+													progressData.processedFiles ) /
+												5;
+											console.log(
+												'fakeProgress',
+												progressData.fakeProgress
+											);
+
+											pxSend( 'setDownloadProgress', [
+												calculateProgress(
+													progressData
+												),
+											] );
+										},
+										500
+									);
+								}
+							} else {
+								// eslint-disable-next-line no-console
+								console.error( `Unexpected response: ${ lastResponse }` ); // prettier-ignore
+							}
+						} else {
+							jAjax.success( lastResponse );
+						}
+					},
+					false
+				);
+
+				return xhr;
+			},
+			type: 'POST',
+			url: ajaxurl, // eslint-disable-line no-undef
+			data: {
+				action: 'download_pixxio_image',
+				file: file,
+				returnMediaItem: !! mediaItems,
+			},
+			success( data ) {
+				progressData.processedFiles++;
+				if ( data.success ) {
+					if (
+						progressData.processedFiles >= progressData.totalFiles
+					) {
+						clearInterval( progressData.fakeInterval );
+						pxSend( 'setDownloadComplete' );
+					}
+					wp.Uploader.queue.add( data.data );
+					if (
+						mediaItems &&
+						data.data._returnMediaItemUrl &&
+						! mediaItems.querySelector(
+							'#media-item-' + data.data.id
+						)
+					) {
+						const fileObj = {
+							id: data.data.id,
+							name: data.data.filename,
+						};
+						fileQueued( fileObj ); // eslint-disable-line no-undef
+						uploadSuccess( fileObj, data.data.id ); // eslint-disable-line no-undef
+					}
+				}
+			},
+		} );
+	}
+
+	function downloadFiles( files ) {
+		if ( ! files || ! files.length ) {
+			console.warn( 'No files to download' ); // eslint-disable-line no-console
+		}
+
+		const progressData = {
+			totalFiles: files.length,
+			processedFiles: 0,
+			fileProgress: new Map(),
+			fakeInterval: null,
+			fakeProgress: 0,
+		};
+
+		files.forEach( ( file ) => {
+			progressData.fileProgress.set( file, 0 );
+			downloadSingleFile( file, progressData );
+		} );
+	}
+
 	window.addEventListener( 'message', ( messageEvent ) => {
 		if (
 			messageEvent?.origin !== 'https://plugin.pixx.io' ||
@@ -198,84 +339,7 @@
 			return;
 
 		if ( messageEvent?.data?.method === 'downloadFiles' ) {
-			$.ajax( {
-				xhr() {
-					const xhr = new window.XMLHttpRequest();
-					const jAjax = this;
-					let afterUploadFakeProgress;
-
-					xhr.addEventListener(
-						'progress',
-						function ( event ) {
-							const responseLines =
-								event.currentTarget.responseText
-									.split( '\n' )
-									.filter( Boolean );
-							const lastResponse = JSON.parse(
-								responseLines[ responseLines.length - 1 ]
-							);
-							if ( lastResponse?.success === undefined ) {
-								if ( lastResponse?.progress !== undefined ) {
-									pxSend( 'setDownloadProgress', [
-										lastResponse.progress * 0.5,
-									] );
-									if ( lastResponse.progress === 100 ) {
-										lastResponse.progress *= 0.5;
-										afterUploadFakeProgress = setInterval(
-											function () {
-												lastResponse.progress += 3;
-
-												// console.log( 'fake', lastResponse.progress );
-												pxSend( 'setDownloadProgress', [
-													lastResponse.progress,
-												] );
-											},
-											1000
-										);
-									}
-								} else {
-									// eslint-disable-next-line no-console
-									console.error( `Unexpected response: ${ lastResponse }` ); // prettier-ignore
-								}
-							} else {
-								jAjax.success( lastResponse );
-								clearInterval( afterUploadFakeProgress );
-							}
-						},
-						false
-					);
-
-					return xhr;
-				},
-				type: 'POST',
-				url: ajaxurl, // eslint-disable-line no-undef
-				data: {
-					action: 'download_pixxio_image',
-					files: messageEvent?.data?.parameters,
-					returnMediaItem: !! mediaItems,
-				},
-				success( data ) {
-					//Do something on success
-					if ( data.success ) {
-						pxSend( 'setDownloadComplete' );
-						wp.Uploader.queue.add( data.data );
-						if (
-							mediaItems &&
-							data.data._returnMediaItemUrl &&
-							! mediaItems.querySelector(
-								'#media-item-' + data.data.id
-							)
-						) {
-							const fileObj = {
-								id: data.data.id,
-								name: data.data.filename,
-							};
-							fileQueued( fileObj ); // eslint-disable-line no-undef
-							uploadSuccess( fileObj, data.data.id ); // eslint-disable-line no-undef
-						}
-					}
-				},
-			} );
+			downloadFiles( messageEvent?.data?.parameters[ 0 ] );
 		}
 	} );
 

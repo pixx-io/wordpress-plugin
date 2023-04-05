@@ -160,8 +160,9 @@ class MediaHandler extends Singleton {
 			wp_send_json_error( 'Permission denied' );
 		}
 
-		$pixxio_id  = (int) $_POST['files'][0][0]['id'];
-		$image_url  = esc_url_raw( $_POST['files'][0][0]['downloadURL'] );
+		// @TODO: check required parameters
+		$pixxio_id  = (int) $_POST['file']['id'];
+		$image_url  = esc_url_raw( $_POST['file']['downloadURL'] );
 		$mediaspace = parse_url( $image_url, PHP_URL_HOST );
 
 		// check if an attachment for this pixxio ID and mediaspace already exists
@@ -198,7 +199,7 @@ class MediaHandler extends Singleton {
 			$image_url = esc_url_raw( $image_url );
 
 			// Set image name
-			$image_name = sanitize_file_name( $_POST['files'][0][0]['fileName'] );
+			$image_name = sanitize_file_name( $_POST['file']['fileName'] );
 
 			// Trigger download
 			$result = self::download_to_media_library( $image_url, $image_name );
