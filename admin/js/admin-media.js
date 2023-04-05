@@ -104,7 +104,10 @@
 			commonFrame.initialize.apply( this, arguments );
 		},
 		bindHandlers() {
-			select.prototype.bindHandlers.apply( this, arguments );
+			// we don't need the default handlers in the "import from pixx.io" modal
+			if ( ! this._pixxioExclusive ) {
+				select.prototype.bindHandlers.apply( this, arguments );
+			}
 			commonFrame.bindHandlers.apply( this, arguments );
 		},
 		browseRouter() {
@@ -141,6 +144,10 @@
 	} );
 
 	function pxSend( method, parameters = [] ) {
+		if ( ! pixxioSdk || ! pixxioSdk?.contentWindow ) {
+			pixxioSdk = document.querySelector( 'iframe#pixxio_sdk' );
+		}
+		
 		pixxioSdk.contentWindow.postMessage(
 			{
 				receiver: 'pixxio-plugin-sdk',
