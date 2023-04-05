@@ -46,6 +46,28 @@ class Admin extends Singleton {
 			'pre-plupload-upload-ui',
 			array( self::class, 'pre_plupload_upload_ui' )
 		);
+
+		add_action(
+			'attachment_submitbox_misc_actions',
+			array( self::class, 'editor_show_meta' )
+		);
+	}
+
+
+	public static function editor_show_meta( $attachment ) {
+		$meta = get_metadata( 'post', $attachment->ID, '', true );
+		if ( ! empty( $meta['pixxio_id'] ) ) {
+			echo '<div class="misc-pub-section misc-pub-pixxio">
+				<strong>' . esc_html__( 'pixx.io', 'pixxio' ) . '</strong>
+				<dl>
+					<dt>' . esc_html__( 'Mediaspace:', 'pixx.io' ) . '</dt>
+					<dd><a href="https://' . esc_attr( $meta['pixxio_mediaspace'][0] ) . '" target="_blank">' . esc_html( $meta['pixxio_mediaspace'][0] ) . '</a></dd>
+					
+					<dt>' . esc_html__( 'ID:', 'pixx.io' ) . '</dt>
+					<dd><a href="https://' . esc_attr( $meta['pixxio_mediaspace'][0] ) . '/media/overview/file/' . esc_attr( $meta['pixxio_id'][0] ) . '" target="_blank">' . (int)$meta['pixxio_id'][0] . '</a></dd>
+				</dl>
+			</div>';
+		}
 	}
 
 	/**
@@ -67,10 +89,12 @@ class Admin extends Singleton {
 		</script>
 		<script type="text/html" id="tmpl-pixxio-meta">
 			<div class="pixxio-meta">
-				<strong>pixx.io</strong>
+				<strong><?php \esc_html_e( 'pixx.io', 'pixxio' ); ?></strong>
 				<dl>
-					<dt>Mediaspace:</dt> <dd><a href="https://{{ data.pixxio_mediaspace }}" target="_blank">{{ data.pixxio_mediaspace }}</a></dd>
-					<dt>ID:</dt> <dd><a href="https://{{ data.pixxio_mediaspace }}/media/overview/file/{{ data.pixxio_id }}" target="_blank">{{ data.pixxio_id }}</dd>
+					<dt><?php esc_html_e( 'Mediaspace:', 'pixx.io' ); ?></dt>`
+					<dd><a href="https://{{ data.pixxio_mediaspace }}" target="_blank">{{ data.pixxio_mediaspace }}</a></dd>
+					<dt><?php esc_html_e( 'ID:', 'pixx.io' ); ?></dt>
+					<dd><a href="https://{{ data.pixxio_mediaspace }}/media/overview/file/{{ data.pixxio_id }}" target="_blank">{{ data.pixxio_id }}</dd>
 				</dl>
 			</div>
 		</script>

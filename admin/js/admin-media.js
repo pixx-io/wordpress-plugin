@@ -117,29 +117,39 @@
 		renderPixxioFrame: commonFrame.renderPixxioFrame,
 	} );
 
-	wp.media.view.Attachment.Details.TwoColumn = attachmentDetails.extend( {
-		template(attachmentData) {
-			const super_template = attachmentDetails.prototype.template.apply( this, arguments );
-			if ( typeof attachmentData.pixxio_id === 'undefined' ) {
-				return super_template;
-			}
+	if ( attachmentDetails ) {
+		wp.media.view.Attachment.Details.TwoColumn = attachmentDetails.extend( {
+			template( attachmentData ) {
+				const super_template =
+					attachmentDetails.prototype.template.apply(
+						this,
+						arguments
+					);
+				if ( typeof attachmentData.pixxio_id === 'undefined' ) {
+					return super_template;
+				}
 
-			const fragment = document.createRange().createContextualFragment( super_template );
-			const compat = fragment.querySelector('div.compat-meta');
-			
-			const div = document.createElement('div');
-			div.className = 'pixxio-meta';
+				const fragment = document
+					.createRange()
+					.createContextualFragment( super_template );
+				const compat = fragment.querySelector( 'div.compat-meta' );
 
-			const metaFragment = document.createRange().createContextualFragment(
-				wp.template('pixxio-meta')(attachmentData)
-			);
+				const div = document.createElement( 'div' );
+				div.className = 'pixxio-meta';
 
-			compat.before(metaFragment);
+				const metaFragment = document
+					.createRange()
+					.createContextualFragment(
+						wp.template( 'pixxio-meta' )( attachmentData )
+					);
 
-			const serializer = new XMLSerializer();
-			return serializer.serializeToString(fragment);
-		}
-	} );
+				compat.before( metaFragment );
+
+				const serializer = new XMLSerializer();
+				return serializer.serializeToString( fragment );
+			},
+		} );
+	}
 
 	const pxFrame = wp.media.view.MediaFrame.Select.extend( {
 		_pixxioExclusive: true,
@@ -272,11 +282,12 @@
 	// add pixxio icon to classic table view in browsers without :has() support
 	if ( ! CSS.supports( 'selector(:has(+ *))' ) ) {
 		const pxMedia = document.querySelectorAll( '.media-icon img.pixxio' );
-		console.log(pxMedia);
+		console.log( pxMedia );
 		if ( pxMedia && pxMedia.length ) {
 			pxMedia.forEach( ( el ) => {
 				el.closest( '.media-icon' ).classList.add( 'pixxio' );
 			} );
 		}
 	}
+
 } )( jQuery ); // eslint-disable-line no-undef

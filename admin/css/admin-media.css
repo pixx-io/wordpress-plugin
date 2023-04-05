@@ -51,6 +51,7 @@ break the whole rule in unsupporting browsers */
 	content: "";
 }
 
+.misc-pub-pixxio > strong::before,
 .media-modal-content .attachment-details .pixxio-meta > strong::before {
 	content: "";
 	display: inline-block;
@@ -60,11 +61,34 @@ break the whole rule in unsupporting browsers */
 	line-height: 1rem;
 	margin-right: 0.2rem;
 	background: url(../images/logo.svg);
+	background-position: center center;
+}
+
+.misc-pub-pixxio {
+	padding-bottom: 0;
+}
+
+.misc-pub-pixxio > strong::before {
+	margin-left: 0.1rem;
+	margin-right: 0.5rem;
+}
+
+.media-modal-content .attachment-details .pixxio-meta > dl,
+.misc-pub-pixxio > dl {
+	overflow: hidden;
+}
+
+.misc-pub-pixxio > dl {
+	margin-top: 0.2rem;
+}
+
+.misc-pub-pixxio .misc-pub-section {
+	overflow: hidden;
+	padding-left: 0;
 }
 
 .media-modal-content .attachment-details .pixxio-meta > dl {
-	margin: 0 0 0 1.2rem;
-	overflow: hidden;
+	margin: 0;
 }
 
 .pixxio-meta {
@@ -72,15 +96,22 @@ break the whole rule in unsupporting browsers */
 }
 
 .pixxio-meta > dl dt,
-.pixxio-meta > dl dd {
+.pixxio-meta > dl dd,
+.misc-pub-pixxio > dl dt,
+.misc-pub-pixxio > dl dd {
 	width: auto;
 	display: inline-block;
 	float: left;
 	margin: auto;
 }
 
-.pixxio-meta > dl dt {
+.pixxio-meta > dl dt,
+.misc-pub-pixxio > dl dd {
 	font-weight: 600;
+}
+
+.pixxio-meta > dl dt,
+.misc-pub-pixxio > dl dt {
 	clear: left;
 	margin-right: 0.5ch;
 }
