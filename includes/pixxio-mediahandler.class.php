@@ -75,6 +75,15 @@ class MediaHandler extends Singleton {
 		if ( $progress > $previousProgress ) {
 			if ( ! headers_sent() ) {
 				header( 'Content-Type: application/json' );
+				@ini_set( 'output_buffering', 'off' );
+				@ini_set( 'zlib.output_compression', 'off' );
+			}
+			if ( ! defined( 'PROGRESS_BUFFER_SENT' ) ) {
+				// fill buffer to minimum size for flushing
+				echo random_bytes( 64 * 1024 + 1 );
+				define( 'PROGRESS_BUFFER_SENT', true );
+				ob_flush();
+				flush();
 			}
 			echo json_encode( array( 'progress' => $progress ) ) . "\n";
 			ob_flush();

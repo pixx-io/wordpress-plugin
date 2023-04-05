@@ -194,6 +194,8 @@
 		);
 	}
 
+	let chunkResponseEnabled = false;
+
 	function calculateProgress( progressData ) {
 		const fileMaxPart = 100 / progressData.totalFiles;
 		let progress = 0;
@@ -201,7 +203,9 @@
 			// leave space for WP/PHP processing time after download
 			// by using only half the value and filling the rest
 			// with a fake progress value increased by an interval
-			progress += ( ( percent / 100 ) * fileMaxPart ) / 2;
+			progress +=
+				( ( percent / 100 ) * fileMaxPart ) /
+				( chunkResponseEnabled ? 2 : 1 );
 		} );
 
 		return Math.floor( progress + progressData.fakeProgress );
@@ -219,11 +223,22 @@
 						const responseLines = event.currentTarget.responseText
 							.split( '\n' )
 							.filter( Boolean );
-						const lastResponse = JSON.parse(
-							responseLines[ responseLines.length - 1 ]
-						);
+						if ( ! responseLines.length ) {
+							return;
+						}
+
+						const lastLine =
+							responseLines[ responseLines.length - 1 ].trim();
+						let lastResponse = {};
+						try {
+							lastResponse = JSON.parse( lastLine );
+						} catch ( e ) {
+							return;
+						}
+
 						if ( lastResponse?.success === undefined ) {
 							if ( lastResponse?.progress !== undefined ) {
+								chunkResponseEnabled = true;
 								progressData.fileProgress.set(
 									file,
 									lastResponse.progress
@@ -263,6 +278,7 @@
 								console.error( `Unexpected response: ${ lastResponse }` ); // prettier-ignore
 							}
 						} else {
+							progressData.fileProgress.set( file, 100 );
 							jAjax.success( lastResponse );
 						}
 					},
@@ -281,6 +297,9 @@
 			},
 			success( data ) {
 				progressData.processedFiles++;
+				pxSend( 'setDownloadProgress', [
+					calculateProgress( progressData ),
+				] );
 				if ( data.success ) {
 					if (
 						progressData.processedFiles >= progressData.totalFiles
