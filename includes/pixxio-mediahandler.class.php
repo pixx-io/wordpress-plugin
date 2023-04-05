@@ -162,8 +162,7 @@ class MediaHandler extends Singleton {
 	 */
 	public static function download_pixxio_image_ajax_handler() {
 		// Check for permissions and validate the nonce
-		// @TODO: verify nonce
-		if ( ! current_user_can( 'upload_files' ) /*|| !isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'download_pixxio_image')*/ ) {
+		if ( ! current_user_can( 'upload_files' ) || ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'download_pixxio_image' ) ) {
 			wp_send_json_error( 'Permission denied' );
 		}
 
@@ -252,7 +251,7 @@ class MediaHandler extends Singleton {
 				$response[ $key ] = is_numeric( $meta[ $key ][0] ) ? (int) $meta[ $key ][0] : $meta[ $key ][0];
 			}
 
-			$response['pixxio_import_formatted'] = mysql2date( __( 'F j, Y' ), $response['pixxio_import_gmt'] );
+			$response['pixxio_import_formatted'] = mysql2date( Pixxio::i18n()->__d( 'F j, Y' ), $response['pixxio_import_gmt'] );
 		}
 		return $response;
 	}

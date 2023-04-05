@@ -83,9 +83,11 @@ class Admin extends Singleton {
 		if ( substr( $locale, 0, 3 ) === 'de_' ) {
 			$iframe_lang = 'de';
 		}
+
+		$nonce = wp_create_nonce( 'download_pixxio_image' );
 		?>
 		<script type="text/html" id="tmpl-pixxio-content">
-		<iframe id="pixxio_sdk" src="https://plugin.pixx.io/static/v0/<?php echo $iframe_lang; ?>/media" width="100%" height="100%"></iframe>
+		<iframe id="pixxio_sdk" src="https://plugin.pixx.io/static/v0/<?php echo $iframe_lang; ?>/media" data-nonce="<?php echo esc_attr( $nonce ); ?>" width="100%" height="100%"></iframe>
 		</script>
 		<script type="text/html" id="tmpl-pixxio-meta">
 			<div class="pixxio-meta">

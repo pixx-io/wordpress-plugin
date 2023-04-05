@@ -282,6 +282,7 @@
 				action: 'download_pixxio_image',
 				file: file,
 				returnMediaItem: !! mediaItems,
+				nonce: pixxioSdk.dataset.nonce
 			},
 			success( data ) {
 				progressData.processedFiles++;
