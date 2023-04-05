@@ -35,31 +35,39 @@ class MediaHandler extends Singleton {
 			10,
 			3
 		);
+
+		add_filter(
+			'wp_get_attachment_image_attributes',
+			array( self::class, 'add_pixxio_id_class' ),
+			10,
+			3
+		);
 	}
 
 	/**
 	 * Returns a chunked response by flushing successive JSON responses containing the upload progress
-	 * 
+	 *
 	 * @since 1.0.0
-	 * 
-	 * @param void $resource 
-	 * @param double $download_size 
-	 * @param double $downloaded_size 
-	 * @param double $upload_size 
-	 * @param double $uploaded_size 
-	 * @return void 
+	 *
+	 * @param void   $resource
+	 * @param double $download_size
+	 * @param double $downloaded_size
+	 * @param double $upload_size
+	 * @param double $uploaded_size
+	 * @return void
 	 */
-	function downloadProgress ($resource, $download_size, $downloaded_size, $upload_size, $uploaded_size) {
+	function downloadProgress( $resource, $download_size, $downloaded_size, $upload_size, $uploaded_size ) {
 		static $previousProgress = 0;
-		
-		if ( $download_size == 0 )
+
+		if ( $download_size == 0 ) {
 			$progress = 0;
-		else
+		} else {
 			$progress = round( $downloaded_size * 100 / $download_size );
-		
-		if ( $progress > $previousProgress) {
-			if( ! headers_sent() ) {
-				header('Content-Type: application/json');
+		}
+
+		if ( $progress > $previousProgress ) {
+			if ( ! headers_sent() ) {
+				header( 'Content-Type: application/json' );
 			}
 			echo json_encode( array( 'progress' => $progress ) ) . "\n";
 			ob_flush();
@@ -67,7 +75,7 @@ class MediaHandler extends Singleton {
 			$previousProgress = $progress;
 		}
 	}
-	
+
 	/**
 	 * Downloads an image from pixx.io and adds it to the media library, returning the new attachment ID.
 	 *
@@ -85,17 +93,21 @@ class MediaHandler extends Singleton {
 		}
 
 		// Create a temporary file for the image
-		$tmp_file = wp_tempnam( $image_name );
+		$tmp_file        = wp_tempnam( $image_name );
 		$tmp_file_handle = fopen( $tmp_file, 'w' );
 		if ( ! $tmp_file ) {
 			return new \WP_Error( 'tmp_file_error', __( 'Error creating temporary file', 'pixxio' ) );
 		}
 
-		add_action('http_api_curl', function( $handle ) use ( $tmp_file_handle ) {
-			curl_setopt( $handle, CURLOPT_PROGRESSFUNCTION, array( static::class, 'downloadProgress' ) );
-			curl_setopt( $handle, CURLOPT_FILE, $tmp_file_handle );
-			curl_setopt( $handle, CURLOPT_NOPROGRESS, false );
-		}, PHP_INT_MAX );
+		add_action(
+			'http_api_curl',
+			function( $handle ) use ( $tmp_file_handle ) {
+				curl_setopt( $handle, CURLOPT_PROGRESSFUNCTION, array( static::class, 'downloadProgress' ) );
+				curl_setopt( $handle, CURLOPT_FILE, $tmp_file_handle );
+				curl_setopt( $handle, CURLOPT_NOPROGRESS, false );
+			},
+			PHP_INT_MAX
+		);
 
 		// Download the image
 		$response = wp_remote_get( $image_url );
@@ -103,9 +115,9 @@ class MediaHandler extends Singleton {
 		if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) ) {
 			return new \WP_Error( 'download_error', __( 'Error downloading image', 'pixxio' ) );
 		}
-		
+
 		fclose( $tmp_file_handle );
-			
+
 		// Get the image's mime type
 		$filetype = wp_check_filetype( $image_name, null );
 
@@ -227,9 +239,9 @@ class MediaHandler extends Singleton {
 	public static function add_attachment_json_pixxio_meta( $response, $attachment, $meta ) {
 		$meta = get_metadata( 'post', $attachment->ID, '', true );
 		if ( ! empty( $meta['pixxio_id'] ) ) {
-			$keys = array( 'pixxio_id', 'pixxio_mediaspace', 'pixxio_import_gmt');
+			$keys = array( 'pixxio_id', 'pixxio_mediaspace', 'pixxio_import_gmt' );
 			foreach ( $keys as $key ) {
-				$response[$key] = is_numeric( $meta[$key][0] ) ? (int)$meta[$key][0] : $meta[$key][0];
+				$response[ $key ] = is_numeric( $meta[ $key ][0] ) ? (int) $meta[ $key ][0] : $meta[ $key ][0];
 			}
 
 			$response['pixxio_import_formatted'] = mysql2date( __( 'F j, Y' ), $response['pixxio_import_gmt'] );
@@ -237,5 +249,19 @@ class MediaHandler extends Singleton {
 		return $response;
 	}
 
+	/**
+	 *
+	 * @param string[]     $attr
+	 * @param \WP_Post     $attachment
+	 * @param string|int[] $size
+	 * @return string[]
+	 */
+	public static function add_pixxio_id_class( $attr, $attachment, $size ) {
+		$pixxio_id = get_post_meta( $attachment->ID, 'pixxio_id', true );
+		if ( ! empty( $pixxio_id ) ) {
+			$attr['class'] .= ' pixxio';
+		}
+		return $attr;
+	}
 
 }
