@@ -120,18 +120,18 @@
 	if ( attachmentDetails ) {
 		wp.media.view.Attachment.Details.TwoColumn = attachmentDetails.extend( {
 			template( attachmentData ) {
-				const super_template =
+				const superTemplate =
 					attachmentDetails.prototype.template.apply(
 						this,
 						arguments
 					);
 				if ( typeof attachmentData.pixxio_id === 'undefined' ) {
-					return super_template;
+					return superTemplate;
 				}
 
 				const fragment = document
 					.createRange()
-					.createContextualFragment( super_template );
+					.createContextualFragment( superTemplate );
 				const compat = fragment.querySelector( 'div.compat-meta' );
 
 				const div = document.createElement( 'div' );
@@ -145,7 +145,7 @@
 
 				compat.before( metaFragment );
 
-				const serializer = new XMLSerializer();
+				const serializer = new XMLSerializer(); // eslint-disable-line no-undef
 				return serializer.serializeToString( fragment );
 			},
 		} );
@@ -280,14 +280,14 @@
 	} );
 
 	// add pixxio icon to classic table view in browsers without :has() support
-	if ( ! CSS.supports( 'selector(:has(+ *))' ) ) {
+	if (
+		! CSS.supports( 'selector(:has(+ *))' ) // eslint-disable-line no-undef
+	) {
 		const pxMedia = document.querySelectorAll( '.media-icon img.pixxio' );
-		console.log( pxMedia );
 		if ( pxMedia && pxMedia.length ) {
 			pxMedia.forEach( ( el ) => {
 				el.closest( '.media-icon' ).classList.add( 'pixxio' );
 			} );
 		}
 	}
-
 } )( jQuery ); // eslint-disable-line no-undef
