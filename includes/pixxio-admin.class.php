@@ -65,6 +65,15 @@ class Admin extends Singleton {
 		<script type="text/html" id="tmpl-pixxio-content">
 		<iframe id="pixxio_sdk" src="https://plugin.pixx.io/static/v0/<?php echo $iframe_lang; ?>/media" width="100%" height="100%"></iframe>
 		</script>
+		<script type="text/html" id="tmpl-pixxio-meta">
+			<div class="pixxio-meta">
+				<strong>pixx.io</strong>
+				<dl>
+					<dt>Mediaspace:</dt> <dd><a href="https://{{ data.pixxio_mediaspace }}" target="_blank">{{ data.pixxio_mediaspace }}</a></dd>
+					<dt>ID:</dt> <dd><a href="https://{{ data.pixxio_mediaspace }}/media/overview/file/{{ data.pixxio_id }}" target="_blank">{{ data.pixxio_id }}</dd>
+				</dl>
+			</div>
+		</script>
 		<?php
 	}
 

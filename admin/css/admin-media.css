@@ -50,3 +50,37 @@ break the whole rule in unsupporting browsers */
 .media-icon:has(img.pixxio)::after {
 	content: "";
 }
+
+.media-modal-content .attachment-details .pixxio-meta > strong::before {
+	content: "";
+	display: inline-block;
+	width: 1rem;
+	height: 1rem;
+	vertical-align: middle;
+	line-height: 1rem;
+	margin-right: 0.2rem;
+	background: url(../images/logo.svg);
+}
+
+.media-modal-content .attachment-details .pixxio-meta > dl {
+	margin: 0 0 0 1.2rem;
+	overflow: hidden;
+}
+
+.pixxio-meta {
+	margin: 0.2rem 0;
+}
+
+.pixxio-meta > dl dt,
+.pixxio-meta > dl dd {
+	width: auto;
+	display: inline-block;
+	float: left;
+	margin: auto;
+}
+
+.pixxio-meta > dl dt {
+	font-weight: 600;
+	clear: left;
+	margin-right: 0.5ch;
+}

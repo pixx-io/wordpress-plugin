@@ -16,8 +16,6 @@
 			] );
 		},
 		bindHandlers() {
-			this.on( 'content:create', this.initCheck, this );
-
 			this.on( 'content:render:pixxio', this.renderPixxioFrame, this );
 		},
 		browseRouter( routerView ) {
@@ -78,6 +76,7 @@
 
 	const frame = wp.media.view.MediaFrame.Post;
 	const select = wp.media.view.MediaFrame.Select;
+	const attachmentDetails = wp.media.view.Attachment.Details.TwoColumn;
 	let pixxioSdk = null;
 	const mediaItems = document.querySelector( '#media-items' );
 
@@ -98,7 +97,6 @@
 	} );
 
 	wp.media.view.MediaFrame.Select = select.extend( {
-		initCheck: commonFrame.initCheck,
 		initialize() {
 			select.prototype.initialize.apply( this, arguments );
 			commonFrame.initialize.apply( this, arguments );
@@ -117,6 +115,25 @@
 			}
 		},
 		renderPixxioFrame: commonFrame.renderPixxioFrame,
+	} );
+
+	wp.media.view.Attachment.Details.TwoColumn = attachmentDetails.extend( {
+		template(attachmentData) {
+			const fragment = document.createRange().createContextualFragment( attachmentDetails.prototype.template.apply( this, arguments ) );
+			const compat = fragment.querySelector('div.compat-meta');
+			
+			const div = document.createElement('div');
+			div.className = 'pixxio-meta';
+
+			const metaFragment = document.createRange().createContextualFragment(
+				wp.template('pixxio-meta')(attachmentData)
+			);
+
+			compat.before(metaFragment);
+
+			const serializer = new XMLSerializer();
+			return serializer.serializeToString(fragment);
+		}
 	} );
 
 	const pxFrame = wp.media.view.MediaFrame.Select.extend( {

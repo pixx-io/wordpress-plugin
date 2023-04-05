@@ -31,7 +31,7 @@ class MediaHandler extends Singleton {
 
 		add_filter(
 			'wp_prepare_attachment_for_js',
-			array( self::class, 'add_attachment_json_pixxio_id' ),
+			array( self::class, 'add_attachment_json_pixxio_meta' ),
 			10,
 			3
 		);
@@ -224,10 +224,15 @@ class MediaHandler extends Singleton {
 	 * @param [type]   $meta
 	 * @return array
 	 */
-	public static function add_attachment_json_pixxio_id( $response, $attachment, $meta ) {
-		$pixxio_id = get_post_meta( $attachment->ID, 'pixxio_id', true );
-		if ( ! empty( $pixxio_id ) ) {
-			$response['pixxio_id'] = (int) $pixxio_id;
+	public static function add_attachment_json_pixxio_meta( $response, $attachment, $meta ) {
+		$meta = get_metadata( 'post', $attachment->ID, '', true );
+		if ( ! empty( $meta['pixxio_id'] ) ) {
+			$keys = array( 'pixxio_id', 'pixxio_mediaspace', 'pixxio_import_gmt');
+			foreach ( $keys as $key ) {
+				$response[$key] = is_numeric( $meta[$key][0] ) ? (int)$meta[$key][0] : $meta[$key][0];
+			}
+
+			$response['pixxio_import_formatted'] = mysql2date( __( 'F j, Y' ), $response['pixxio_import_gmt'] );
 		}
 		return $response;
 	}
