@@ -147,7 +147,7 @@
 		if ( ! pixxioSdk || ! pixxioSdk?.contentWindow ) {
 			pixxioSdk = document.querySelector( 'iframe#pixxio_sdk' );
 		}
-		
+
 		pixxioSdk.contentWindow.postMessage(
 			{
 				receiver: 'pixxio-plugin-sdk',

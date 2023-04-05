@@ -21,12 +21,12 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "plugin-zip": "wp-scripts plugin-zip --dir=pixxio",
     "pack": "node src/dist-pre.js && npm run plugin-zip && node src/dist-post.js",
-    "pack-major": "npm version major && npm run pack",
-    "pack-minor": "npm version minor && npm run pack",
-    "pack-patch": "npm version patch && npm run pack",
+    "pack-major": "npm version major --no-git-tag-version && npm run pack",
+    "pack-minor": "npm version minor --no-git-tag-version && npm run pack",
+    "pack-patch": "npm version patch --no-git-tag-version && npm run pack",
     "dist": "npm run lint && npm run pack",
-    "dist-major": "npm run lint && npm version major && npm run pack",
-    "dist-minor": "npm run lint && npm version minor && npm run pack",
-    "dist-patch": "npm run lint && npm version patch && npm run pack"
+    "dist-major": "npm run lint && npm version major --no-git-tag-version && npm run pack",
+    "dist-minor": "npm run lint && npm version minor --no-git-tag-version && npm run pack",
+    "dist-patch": "npm run lint && npm version patch --no-git-tag-version && npm run pack"
   }
 }
