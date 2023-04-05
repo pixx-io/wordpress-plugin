@@ -158,6 +158,8 @@ class MediaHandler extends Singleton {
 	 * Handles the ajax request to download an image from pixx.io to the media library,
 	 * linking the attachment to the pixx.io image ID via post meta.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @return void
 	 */
 	public static function download_pixxio_image_ajax_handler() {
@@ -257,6 +259,9 @@ class MediaHandler extends Singleton {
 	}
 
 	/**
+	 * Adds the class "pixxio" to attachment images for linked attachments
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param string[]     $attr
 	 * @param \WP_Post     $attachment

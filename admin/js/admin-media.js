@@ -197,7 +197,7 @@
 	function calculateProgress( progressData ) {
 		const fileMaxPart = 100 / progressData.totalFiles;
 		let progress = 0;
-		progressData.fileProgress.forEach( ( percent, file ) => {
+		progressData.fileProgress.forEach( ( percent ) => {
 			// leave space for WP/PHP processing time after download
 			// by using only half the value and filling the rest
 			// with a fake progress value increased by an interval
@@ -236,7 +236,6 @@
 									lastResponse.progress === 100 &&
 									progressData.fakeInterval === null
 								) {
-									console.log( 'set interval' );
 									progressData.fakeInterval = setInterval(
 										function () {
 											const progressSoFar =
@@ -249,10 +248,6 @@
 												( progressData.totalFiles -
 													progressData.processedFiles ) /
 												5;
-											console.log(
-												'fakeProgress',
-												progressData.fakeProgress
-											);
 
 											pxSend( 'setDownloadProgress', [
 												calculateProgress(
@@ -280,9 +275,9 @@
 			url: ajaxurl, // eslint-disable-line no-undef
 			data: {
 				action: 'download_pixxio_image',
-				file: file,
+				file,
 				returnMediaItem: !! mediaItems,
-				nonce: pixxioSdk.dataset.nonce
+				nonce: pixxioSdk.dataset.nonce,
 			},
 			success( data ) {
 				progressData.processedFiles++;

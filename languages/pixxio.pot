@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: pixx.io\n"
-"POT-Creation-Date: 2023-04-03 15:42+0200\n"
+"POT-Creation-Date: 2023-04-05 18:05+0200\n"
 "PO-Revision-Date: 2023-04-03 15:42+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -24,28 +24,41 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-3: node_modules\n"
 "X-Poedit-SearchPathExcluded-4: vendor\n"
 "X-Poedit-SearchPathExcluded-5: svn\n"
-"X-Poedit-SearchPathExcluded-6: includes\n"
-"X-Poedit-SearchPathExcluded-7: .git\n"
-"X-Poedit-SearchPathExcluded-8: languages\n"
+"X-Poedit-SearchPathExcluded-6: .git\n"
+"X-Poedit-SearchPathExcluded-7: languages\n"
+"X-Poedit-SearchPathExcluded-8: src\n"
 
-#: pixxio.php:64
+#. Plugin Name of the plugin/theme
+#: includes/pixxio-admin.class.php:61 includes/pixxio-admin.class.php:92
+msgid "pixx.io"
+msgstr ""
+
+#: includes/pixxio-admin.class.php:63 includes/pixxio-admin.class.php:94
+msgid "Media space:"
+msgstr ""
+
+#: includes/pixxio-admin.class.php:66 includes/pixxio-admin.class.php:96
+msgid "ID:"
+msgstr ""
+
+#: includes/pixxio-admin.class.php:67 includes/pixxio-admin.class.php:97 includes/pixxio-mediahandler.class.php:294
+msgid "View in media space"
+msgstr ""
+
+#: includes/pixxio-admin.class.php:124
 msgid "Import from pixx.io"
 msgstr ""
 
-#: pixxio.php:80
+#: includes/pixxio-mediahandler.class.php:99
 msgid "Invalid image URL"
 msgstr ""
 
-#: pixxio.php:87
-msgid "Error downloading image"
-msgstr ""
-
-#: pixxio.php:96
+#: includes/pixxio-mediahandler.class.php:106
 msgid "Error creating temporary file"
 msgstr ""
 
-#. Plugin Name of the plugin/theme
-msgid "pixx.io"
+#: includes/pixxio-mediahandler.class.php:123
+msgid "Error downloading image"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
@@ -53,9 +66,7 @@ msgid "https://www.pixx.io/"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid ""
-"The official WordPress plugin for pixx.io. Bring Digital Asset Management to "
-"your WordPress sites by importing assets into your media library."
+msgid "The official WordPress plugin for pixx.io. Bring Digital Asset Management to your WordPress sites by importing assets into your media library."
 msgstr ""
 
 #. Author of the plugin/theme

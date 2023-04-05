@@ -12,10 +12,10 @@ class i18n extends Singleton {
 
 	/**
 	 * load plugin translations
-	 * 
-     * @since 1.0.0
-     * 
-	 * @return void 
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
 	 */
 	public static function init() {
 		add_action(
@@ -32,19 +32,29 @@ class i18n extends Singleton {
 
 	/**
 	 * Return the current user's locale, falling back to the site locale
-	 * 
-     * @since 1.0.0
-     * 
-	 * @return string 
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string
 	 */
 	public function getLocale() {
-		if( ! function_exists( 'wp_get_current_user' ) ) {
+		if ( ! function_exists( 'wp_get_current_user' ) ) {
 			return get_locale();
 		}
 
 		$user        = wp_get_current_user();
 		$user_locale = get_user_meta( $user->ID, 'locale', true ) ?: get_locale();
-		
+
 		return $user_locale;
+	}
+
+	/**
+	 * Helper function to use translations from the default text domain
+	 * without interfering with programs like PoEdit
+	 *
+	 * @return void
+	 */
+	public function __d( $string ) {
+		return call_user_func( '__', $string );
 	}
 }
