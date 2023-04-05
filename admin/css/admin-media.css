@@ -16,8 +16,18 @@
 	margin: 1em auto 60px;
 }
 
-.attachment.pixxio .attachment-preview::after {
-	content: "";
+/* we have to split these selectors because :has() would
+break the whole rule in unsupporting browsers */
+.media-icon.pixxio {
+	position: relative;
+}
+
+.media-icon:has(img.pixxio) {
+	position: relative;
+}
+
+.attachment.pixxio .attachment-preview::after,
+.media-icon::after {
 	width: 1rem;
 	height: 1rem;
 	border: solid #fff 2px;
@@ -28,4 +38,15 @@
 	right: -0.2rem;
 	bottom: -0.2rem;
 	border-radius: 50%;
+}
+
+/* we have to split these selectors because :has() would
+break the whole rule in unsupporting browsers */
+.attachment.pixxio .attachment-preview::after,
+.media-icon.pixxio::after {
+	content: "";
+}
+
+.media-icon:has(img.pixxio)::after {
+	content: "";
 }

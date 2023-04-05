@@ -115,3 +115,19 @@ class Pixxio extends Singleton {
 	}
 }
 Pixxio::init();
+
+/**
+ * 
+ * @param string[] $attr 
+ * @param \WP_Post $attachment 
+ * @param string|int[] $size 
+ * @return string[] 
+ */
+function add_pixxio_id_class( $attr, $attachment, $size ) {
+	$pixxio_id = get_post_meta( $attachment->ID, 'pixxio_id', true );
+	if ( ! empty( $pixxio_id ) ) {
+		$attr['class'] .= ' pixxio';
+	}
+	return $attr;
+}
+add_filter( 'wp_get_attachment_image_attributes', 'Pixxio\add_pixxio_id_class', 10, 3 );

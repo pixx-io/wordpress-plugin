@@ -246,4 +246,15 @@
 			} );
 		}
 	} );
+
+	// add pixxio icon to classic table view in browsers without :has() support
+	if ( ! CSS.supports( 'selector(:has(+ *))' ) ) {
+		const pxMedia = document.querySelectorAll( '.media-icon img.pixxio' );
+		console.log(pxMedia);
+		if ( pxMedia && pxMedia.length ) {
+			pxMedia.forEach( ( el ) => {
+				el.closest( '.media-icon' ).classList.add( 'pixxio' );
+			} );
+		}
+	}
 } )( jQuery ); // eslint-disable-line no-undef
