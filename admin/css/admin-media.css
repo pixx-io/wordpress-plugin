@@ -57,14 +57,20 @@ break the whole rule in unsupporting browsers */
 }
 
 .misc-pub-pixxio > strong::before,
-.pixxio-meta > strong::before {
+.pixxio-meta > strong::before,
+.pixxio-icon::before {
 	content: "";
 	display: inline-block;
-	width: 1rem;
 	height: 1rem;
+	aspect-ratio: 1;
 	vertical-align: middle;
 	background: url(../images/logo.svg);
 	background-position: center center;
+}
+
+.pixxio-icon::before {
+	margin-right: 0.5ch;
+	vertical-align: text-bottom;
 }
 
 .pixxio-meta > strong::before {

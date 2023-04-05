@@ -60,11 +60,11 @@ class Admin extends Singleton {
 			echo '<div class="misc-pub-section misc-pub-pixxio">
 				<strong>' . esc_html__( 'pixx.io', 'pixxio' ) . '</strong>
 				<dl>
-					<dt>' . esc_html__( 'Mediaspace:', 'pixx.io' ) . '</dt>
+					<dt>' . esc_html__( 'Media space:', 'pixxio' ) . '</dt>
 					<dd><a href="https://' . esc_attr( $meta['pixxio_mediaspace'][0] ) . '" target="_blank">' . esc_html( $meta['pixxio_mediaspace'][0] ) . '</a></dd>
 					
-					<dt>' . esc_html__( 'ID:', 'pixx.io' ) . '</dt>
-					<dd><a href="https://' . esc_attr( $meta['pixxio_mediaspace'][0] ) . '/media/overview/file/' . esc_attr( $meta['pixxio_id'][0] ) . '" target="_blank">' . (int)$meta['pixxio_id'][0] . '</a></dd>
+					<dt>' . esc_html__( 'ID:', 'pixxio' ) . '</dt>
+					<dd><a href="https://' . esc_attr( $meta['pixxio_mediaspace'][0] ) . '/media/overview/file/' . esc_attr( $meta['pixxio_id'][0] ) . '" target="_blank"  title="' . esc_html__( 'View in media space', 'pixxio' ) . '">' . (int) $meta['pixxio_id'][0] . '</a></dd>
 				</dl>
 			</div>';
 		}
@@ -91,10 +91,10 @@ class Admin extends Singleton {
 			<div class="pixxio-meta">
 				<strong><?php \esc_html_e( 'pixx.io', 'pixxio' ); ?></strong>
 				<dl>
-					<dt><?php esc_html_e( 'Mediaspace:', 'pixx.io' ); ?></dt>`
+					<dt><?php esc_html_e( 'Media space:', 'pixxio' ); ?></dt>`
 					<dd><a href="https://{{ data.pixxio_mediaspace }}" target="_blank">{{ data.pixxio_mediaspace }}</a></dd>
-					<dt><?php esc_html_e( 'ID:', 'pixx.io' ); ?></dt>
-					<dd><a href="https://{{ data.pixxio_mediaspace }}/media/overview/file/{{ data.pixxio_id }}" target="_blank">{{ data.pixxio_id }}</dd>
+					<dt><?php esc_html_e( 'ID:', 'pixxio' ); ?></dt>
+					<dd><a href="https://{{ data.pixxio_mediaspace }}/media/overview/file/{{ data.pixxio_id }}" target="_blank" title="<?php esc_html_e( 'View in media space', 'pixxio' ); ?>">{{ data.pixxio_id }}</dd>
 				</dl>
 			</div>
 		</script>

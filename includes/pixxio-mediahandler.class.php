@@ -42,6 +42,13 @@ class MediaHandler extends Singleton {
 			10,
 			3
 		);
+
+		add_filter(
+			'media_row_actions',
+			array( self::class, 'add_view_in_mediaspace' ),
+			10,
+			3
+		);
 	}
 
 	/**
@@ -265,4 +272,23 @@ class MediaHandler extends Singleton {
 		return $attr;
 	}
 
+	/**
+	 * Adds a "View in media space" link to the attachment row actions
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string[] $actions
+	 * @param \WP_Post $post
+	 * @param bool     $detached
+	 */
+	public static function add_view_in_mediaspace( $actions, $post, $detached ) {
+		$meta = get_metadata( 'post', $post->ID, '', true );
+		if ( ! empty( $meta['pixxio_id'] ) ) {
+			$actions['pixxio_open'] =
+				'<a href="https://' . esc_attr( $meta['pixxio_mediaspace'][0] ) . '/media/overview/file/' . esc_attr( $meta['pixxio_id'][0] ) . '" class="pixxio-icon" target="_blank">' .
+					esc_html__( 'View in media space', 'pixxio' ) .
+				'</a>';
+		}
+		return $actions;
+	}
 }

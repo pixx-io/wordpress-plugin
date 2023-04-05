@@ -16,17 +16,17 @@ abstract class Singleton {
 	/**
 	 * returns the Singleton instance
 	 *
-     * @since 1.0.0
-     * 
+	 * @since 1.0.0
+	 *
 	 * @return static
 	 */
 	final public static function get_instance() {
 		$class = get_called_class();
-	
+
 		if ( ! isset( $instances[ $class ] ) ) {
-		  self::$instances[ $class ] = new $class();
+			self::$instances[ $class ] = new $class();
 		}
-	
+
 		return self::$instances[ $class ];
 	}
 
