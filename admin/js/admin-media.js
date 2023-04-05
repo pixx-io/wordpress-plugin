@@ -119,7 +119,12 @@
 
 	wp.media.view.Attachment.Details.TwoColumn = attachmentDetails.extend( {
 		template(attachmentData) {
-			const fragment = document.createRange().createContextualFragment( attachmentDetails.prototype.template.apply( this, arguments ) );
+			const super_template = attachmentDetails.prototype.template.apply( this, arguments );
+			if ( typeof attachmentData.pixxio_id === 'undefined' ) {
+				return super_template;
+			}
+
+			const fragment = document.createRange().createContextualFragment( super_template );
 			const compat = fragment.querySelector('div.compat-meta');
 			
 			const div = document.createElement('div');
