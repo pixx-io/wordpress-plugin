@@ -21,7 +21,7 @@
 		browseRouter( routerView ) {
 			routerView.set( {
 				pixxio: {
-					text: 'Import from pixx.io',
+					text: pixxio_i18n.import_from,
 					priority: 30,
 				},
 			} );
