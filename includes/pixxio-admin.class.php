@@ -153,7 +153,7 @@ class Admin extends Singleton {
 				true
 			);
 
-			wp_localize_script( 'pixxio-admin-media', 'pixxio_i18n', array(
+			wp_localize_script( 'pixxio-admin-media', 'pixxioI18n', array(
 				'import_from' => __( 'Import from pixx.io', 'pixxio' )
 			));
 
