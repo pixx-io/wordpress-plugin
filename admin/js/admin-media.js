@@ -1,3 +1,6 @@
+/*
+global CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess
+*/
 ( function ( $ ) {
 	const commonFrame = {
 		initialize() {
@@ -315,8 +318,8 @@
 							id: data.data.id,
 							name: data.data.filename,
 						};
-						fileQueued( fileObj ); // eslint-disable-line no-undef
-						uploadSuccess( fileObj, data.data.id ); // eslint-disable-line no-undef
+						fileQueued( fileObj );
+						uploadSuccess( fileObj, data.data.id );
 					}
 				}
 			},
@@ -355,9 +358,7 @@
 	} );
 
 	// add pixxio icon to classic table view in browsers without :has() support
-	if (
-		! CSS.supports( 'selector(:has(+ *))' ) // eslint-disable-line no-undef
-	) {
+	if ( ! CSS.supports( 'selector(:has(+ *))' ) ) {
 		const pxMedia = document.querySelectorAll( '.media-icon img.pixxio' );
 		if ( pxMedia && pxMedia.length ) {
 			pxMedia.forEach( ( el ) => {
@@ -365,4 +366,4 @@
 			} );
 		}
 	}
-} )( jQuery ); // eslint-disable-line no-undef
+} )( jQuery );
