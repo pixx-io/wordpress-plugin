@@ -93,7 +93,7 @@ class Admin extends Singleton {
 			<div class="pixxio-meta">
 				<strong><?php \esc_html_e( 'pixx.io', 'pixxio' ); ?></strong>
 				<dl>
-					<dt><?php esc_html_e( 'Media space:', 'pixxio' ); ?></dt>`
+					<dt><?php esc_html_e( 'Media space:', 'pixxio' ); ?></dt>
 					<dd><a href="https://{{ data.pixxio_mediaspace }}" target="_blank">{{ data.pixxio_mediaspace }}</a></dd>
 					<dt><?php esc_html_e( 'ID:', 'pixxio' ); ?></dt>
 					<dd><a href="https://{{ data.pixxio_mediaspace }}/media/overview/file/{{ data.pixxio_id }}" target="_blank" title="<?php esc_html_e( 'View in media space', 'pixxio' ); ?>">{{ data.pixxio_id }}</dd>
