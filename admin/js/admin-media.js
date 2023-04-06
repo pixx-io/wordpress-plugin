@@ -39,14 +39,6 @@
 			const view = new pixxioContent();
 
 			this.content.set( view );
-
-			if ( ! pixxioSdk ) {
-				pixxioSdk = this.el.querySelector( 'iframe#pixxio_sdk' );
-			} else {
-				this.el
-					.querySelector( 'iframe#pixxio_sdk' )
-					?.replaceWith( pixxioSdk );
-			}
 		},
 	};
 	// add class in Library view
@@ -175,16 +167,20 @@
 		}
 	} );
 
-	function pxSend( method, parameters = [] ) {
+	function pxSDK() {
 		if ( ! pixxioSdk || ! pixxioSdk?.contentWindow ) {
 			pixxioSdk = document.querySelector( 'iframe#pixxio_sdk' );
 		}
 
+		return pixxioSdk;
+	}
+
+	function pxSend( method, parameters = [] ) {
 		if ( ! Array.isArray( parameters ) ) {
 			parameters = [ parameters ];
 		}
 
-		pixxioSdk.contentWindow.postMessage(
+		pxSDK().contentWindow.postMessage(
 			{
 				receiver: 'pixxio-plugin-sdk',
 				method,
@@ -293,7 +289,7 @@
 				action: 'download_pixxio_image',
 				file,
 				returnMediaItem: !! mediaItems,
-				nonce: pixxioSdk.dataset.nonce,
+				nonce: pxSDK().dataset.nonce,
 			},
 			success( data ) {
 				progressData.processedFiles++;
