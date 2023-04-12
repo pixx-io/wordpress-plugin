@@ -85,9 +85,14 @@ class Admin extends Singleton {
 		}
 
 		$nonce = wp_create_nonce( 'download_pixxio_image' );
+
+		$iframe_url = add_query_arg( array(
+			'applicationId' => 'eS9Pb3S5bsEa2Z6527lUwUBp8',
+			'multiSelect' => 'true',
+		), 'https://plugin.pixx.io/static/v0/' . $iframe_lang . '/media' );
 		?>
 		<script type="text/html" id="tmpl-pixxio-content">
-		<iframe id="pixxio_sdk" src="https://plugin.pixx.io/static/v0/<?php echo $iframe_lang; ?>/media" data-nonce="<?php echo esc_attr( $nonce ); ?>" width="100%" height="100%"></iframe>
+		<iframe id="pixxio_sdk" src="<?php echo esc_url( $iframe_url ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>" width="100%" height="100%"></iframe>
 		</script>
 		<script type="text/html" id="tmpl-pixxio-meta">
 			<div class="pixxio-meta">
