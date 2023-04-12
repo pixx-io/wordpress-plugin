@@ -3,7 +3,7 @@
  * File download and media library handling
  *
  * @package Pixxio
- * @since 1.0.0
+ * @since 2.0.0
  */
 
 namespace Pixxio;
@@ -15,7 +15,7 @@ class MediaHandler extends Singleton {
 	/**
 	 * Initialize MediaHandler functionality
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @return void
 	 */
@@ -54,7 +54,7 @@ class MediaHandler extends Singleton {
 	/**
 	 * Returns a chunked response by flushing successive JSON responses containing the upload progress
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @param void   $resource
 	 * @param double $download_size
@@ -95,7 +95,7 @@ class MediaHandler extends Singleton {
 	/**
 	 * Downloads an image from pixx.io and adds it to the media library, returning the new attachment ID.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @param string $image_url
 	 * @param string $image_name
@@ -167,7 +167,7 @@ class MediaHandler extends Singleton {
 	 * Handles the ajax request to download an image from pixx.io to the media library,
 	 * linking the attachment to the pixx.io image ID via post meta.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @return void
 	 */
@@ -247,7 +247,7 @@ class MediaHandler extends Singleton {
 	/**
 	 * Add the pixx.io image ID to linked attachments when outputting attachment data via an ajax request.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @param array    $response
 	 * @param \WP_Post $attachment
@@ -270,7 +270,7 @@ class MediaHandler extends Singleton {
 	/**
 	 * Adds the class "pixxio" to attachment images for linked attachments
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @param string[]     $attr
 	 * @param \WP_Post     $attachment
@@ -288,7 +288,7 @@ class MediaHandler extends Singleton {
 	/**
 	 * Adds a "View in media space" link to the attachment row actions
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @param string[] $actions
 	 * @param \WP_Post $post

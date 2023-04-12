@@ -3,7 +3,7 @@
  * Language and translation related functionality
  *
  * @package Pixxio
- * @since 1.0.0
+ * @since 2.0.0
  */
 
 namespace Pixxio;
@@ -13,7 +13,7 @@ class i18n extends Singleton {
 	/**
 	 * load plugin translations
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @return void
 	 */
@@ -33,7 +33,7 @@ class i18n extends Singleton {
 	/**
 	 * Return the current user's locale, falling back to the site locale
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @return string
 	 */

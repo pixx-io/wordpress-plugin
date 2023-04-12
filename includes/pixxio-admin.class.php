@@ -3,7 +3,7 @@
  * Admin backend related functionality
  *
  * @package Pixxio
- * @since 1.0.0
+ * @since 2.0.0
  */
 
 namespace Pixxio;
@@ -12,7 +12,7 @@ class Admin extends Singleton {
 	/**
 	 * Initialize admin functionality
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @return void
 	 */
@@ -23,7 +23,7 @@ class Admin extends Singleton {
 	/**
 	 * add hook callbacks
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @return void
 	 */
@@ -73,7 +73,7 @@ class Admin extends Singleton {
 	/**
 	 * Adds the "import from pixx.io" tab content
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @return void
 	 */
@@ -106,7 +106,7 @@ class Admin extends Singleton {
 	/**
 	 * Adds the "import from pixx.io" button to the uploader
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @return void
 	 */

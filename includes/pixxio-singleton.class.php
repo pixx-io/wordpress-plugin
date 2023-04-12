@@ -3,7 +3,7 @@
  * Singleton abstract class
  *
  * @package Pixxio
- * @since 1.0.0
+ * @since 2.0.0
  */
 
 namespace Pixxio;
@@ -16,7 +16,7 @@ abstract class Singleton {
 	/**
 	 * returns the Singleton instance
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @return static
 	 */

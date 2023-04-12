@@ -1,11 +1,11 @@
 <?php
 /*
  * Plugin Name: pixx.io
- * Version: 0.1.6
+ * Version: 2.0.0-rc1
  * Description: The official WordPress plugin for pixx.io. Bring Digital Asset Management to your WordPress sites by importing assets into your media library.
  * Plugin URI: https://www.pixx.io/
- * Author: 48DESIGN GmbH
- * Author URI: https://48design.com
+ * Author: pixx.io GmbH
+ * Author URI: https://www.pixx.io/
  * Text Domain: pixxio
  * Requires PHP: 7.4
  * Requires at least: 6.0
@@ -22,7 +22,7 @@ require_once 'includes/pixxio-singleton.class.php';
   * Pixxio Plugin Main Class
   *
   * @package Pixxio
-  * @since 1.0.0
+  * @since 2.0.0
   * @method static i18n i18n()
   * @method static MediaHandler MediaHandler()
   * @method static Admin Admin()
@@ -51,7 +51,7 @@ class Pixxio extends Singleton {
 	 *
 	 * @param string $className
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @return void
 	 */
@@ -85,7 +85,7 @@ class Pixxio extends Singleton {
 	/**
 	 * Register autoload and initialize sub classes
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
 	 * @return void
 	 * @throws TypeError
