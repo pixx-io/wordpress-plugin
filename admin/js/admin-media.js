@@ -175,6 +175,10 @@ global CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess
 			pixxioSdk = document.querySelector( 'iframe#pixxio_sdk' );
 		}
 
+		if ( ! pixxioSdk ) {
+			throw new Error( 'Could not find Pixx.io SDK iframe' );
+		}
+
 		return pixxioSdk;
 	}
 
@@ -193,6 +197,7 @@ global CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess
 		);
 	}
 
+	let downloadErrors = [];
 	let chunkResponseEnabled = false;
 
 	function calculateProgress( progressData ) {
@@ -278,7 +283,7 @@ global CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess
 							}
 						} else {
 							progressData.fileProgress.set( file, 100 );
-							jAjax.success( lastResponse );
+							jAjax.success( lastResponse, ...arguments );
 						}
 					},
 					false
@@ -296,16 +301,18 @@ global CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess
 			},
 			success( data ) {
 				progressData.processedFiles++;
+				const allFilesFinished =
+					progressData.processedFiles >= progressData.totalFiles;
 				pxSend( 'setDownloadProgress', [
 					calculateProgress( progressData ),
 				] );
+
+				if ( allFilesFinished ) {
+					clearInterval( progressData.fakeInterval );
+					pxSend( 'setDownloadComplete' );
+				}
+
 				if ( data.success ) {
-					if (
-						progressData.processedFiles >= progressData.totalFiles
-					) {
-						clearInterval( progressData.fakeInterval );
-						pxSend( 'setDownloadComplete' );
-					}
 					wp.Uploader.queue.add( data.data );
 					if (
 						mediaItems &&
@@ -321,6 +328,14 @@ global CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess
 						fileQueued( fileObj );
 						uploadSuccess( fileObj, data.data.id );
 					}
+				} else {
+					// eslint-disable-next-line no-console
+					console.error( data );
+					const fileError = `${ file.fileName }: ${ data.data }`;
+					downloadErrors.push( fileError );
+					// @TODO: downloadErrors.join("\n")
+					// once multiple messages are supported
+					pxSend( 'showError', [ fileError ] );
 				}
 			},
 		} );
@@ -330,6 +345,8 @@ global CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess
 		if ( ! files || ! files.length ) {
 			console.warn( 'No files to download' ); // eslint-disable-line no-console
 		}
+
+		downloadErrors = [];
 
 		const progressData = {
 			totalFiles: files.length,
