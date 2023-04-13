@@ -150,14 +150,19 @@ global ajaxurl, CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess, XMLSerialize
 		_pixxioExclusive: true,
 	} );
 
+	let pxFrameInstance = null;
+
 	window.addEventListener( 'load', () => {
 		const pixxioBtn = document.querySelector( '#pixxio-uploader' );
 
 		if ( pixxioBtn ) {
 			pixxioBtn.addEventListener( 'click', () => {
-				wp.media.frame = new pxFrame( { title: pixxioBtn.innerText } );
-				wp.media.frame.open();
-				wp.media.frame.renderPixxioFrame();
+				if ( ! pxFrameInstance ) {
+					pxFrameInstance = new pxFrame( { title: pixxioBtn.innerText } );
+				}
+
+				pxFrameInstance.open();
+				pxFrameInstance.renderPixxioFrame();
 			} );
 
 			const plBtn = document.querySelector( '#plupload-browse-button' );
