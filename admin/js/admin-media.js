@@ -158,7 +158,9 @@ global ajaxurl, CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess, XMLSerialize
 		if ( pixxioBtn ) {
 			pixxioBtn.addEventListener( 'click', () => {
 				if ( ! pxFrameInstance ) {
-					pxFrameInstance = new pxFrame( { title: pixxioBtn.innerText } );
+					pxFrameInstance = new pxFrame( {
+						title: pixxioBtn.innerText,
+					} );
 				}
 
 				pxFrameInstance.open();
@@ -321,8 +323,7 @@ global ajaxurl, CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess, XMLSerialize
 			fileProcessed( data ) {
 				progressData.processedFiles++;
 				const allFilesFinished =
-				progressData.processedFiles >= progressData.totalFiles;
-				console.log( { data, progressData, allFilesFinished }, progressData.processedFiles, progressData.totalFiles );
+					progressData.processedFiles >= progressData.totalFiles;
 
 				if ( allFilesFinished ) {
 					clearInterval( progressData.fakeInterval );
