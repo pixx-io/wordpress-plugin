@@ -53,23 +53,6 @@ class Admin extends Singleton {
 		);
 	}
 
-
-	public static function editor_show_meta( $attachment ) {
-		$meta = get_metadata( 'post', $attachment->ID, '', true );
-		if ( ! empty( $meta['pixxio_id'] ) ) {
-			echo '<div class="misc-pub-section misc-pub-pixxio">
-				<strong>' . esc_html__( 'pixx.io', 'pixxio' ) . '</strong>
-				<dl>
-					<dt>' . esc_html__( 'Media space:', 'pixxio' ) . '</dt>
-					<dd><a href="https://' . esc_attr( $meta['pixxio_mediaspace'][0] ) . '" target="_blank">' . esc_html( $meta['pixxio_mediaspace'][0] ) . '</a></dd>
-					
-					<dt>' . esc_html__( 'ID:', 'pixxio' ) . '</dt>
-					<dd><a href="https://' . esc_attr( $meta['pixxio_mediaspace'][0] ) . '/media/overview/file/' . esc_attr( $meta['pixxio_id'][0] ) . '" target="_blank"  title="' . esc_html__( 'View in media space', 'pixxio' ) . '">' . (int) $meta['pixxio_id'][0] . '</a></dd>
-				</dl>
-			</div>';
-		}
-	}
-
 	/**
 	 * Adds the "import from pixx.io" tab content
 	 *
@@ -101,11 +84,40 @@ class Admin extends Singleton {
 					<dt><?php esc_html_e( 'Media space:', 'pixxio' ); ?></dt>
 					<dd><a href="https://{{ data.pixxio_mediaspace }}" target="_blank">{{ data.pixxio_mediaspace }}</a></dd>
 					<dt><?php esc_html_e( 'ID:', 'pixxio' ); ?></dt>
-					<dd><a href="https://{{ data.pixxio_mediaspace }}/media/overview/file/{{ data.pixxio_id }}" target="_blank" title="<?php esc_html_e( 'View in media space', 'pixxio' ); ?>">{{ data.pixxio_id }}</dd>
+					<dd><a href="https://{{ data.pixxio_mediaspace }}/media/overview/file/{{ data.pixxio_id }}" target="_blank" title="<?php esc_html_e( 'View in media space', 'pixxio' ); ?>">{{ data.pixxio_id }}</a></dd>
+					<dt><?php esc_html_e( 'Format:', 'pixxio' ); ?></dt>
+					<dd>{{ data.pixxio_downloadFormat }}</dd>
 				</dl>
 			</div>
 		</script>
 		<?php
+	}
+
+	/**
+	 * Outputs the linked pixx.io data in the editor meta box
+	 * 
+	 * @since 2.0.0
+	 * 
+	 * @param WP_Post $attachment 
+	 * @return void 
+	 */
+	public static function editor_show_meta( $attachment ) {
+		$meta = get_metadata( 'post', $attachment->ID, '', true );
+		if ( ! empty( $meta['pixxio_id'] ) ) {
+			echo '<div class="misc-pub-section misc-pub-pixxio">
+				<strong>' . esc_html__( 'pixx.io', 'pixxio' ) . '</strong>
+				<dl>
+					<dt>' . esc_html__( 'Media space:', 'pixxio' ) . '</dt>
+					<dd><a href="https://' . esc_attr( $meta['pixxio_mediaspace'][0] ) . '" target="_blank">' . esc_html( $meta['pixxio_mediaspace'][0] ) . '</a></dd>
+					
+					<dt>' . esc_html__( 'ID:', 'pixxio' ) . '</dt>
+					<dd><a href="https://' . esc_attr( $meta['pixxio_mediaspace'][0] ) . '/media/overview/file/' . esc_attr( $meta['pixxio_id'][0] ) . '" target="_blank"  title="' . esc_html__( 'View in media space', 'pixxio' ) . '">' . (int) $meta['pixxio_id'][0] . '</a></dd>
+					
+					<dt>' . esc_html__( 'Format:', 'pixxio' ) . '</dt>
+					<dd>' . esc_html( $meta['pixxio_downloadFormat'][0] ) . '</dd>
+				</dl>
+			</div>';
+		}
 	}
 
 	/**

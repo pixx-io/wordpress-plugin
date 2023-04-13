@@ -194,6 +194,11 @@ class MediaHandler extends Singleton {
 		) {
 			wp_send_json_error( __( 'Invalid download request', 'pixxio' ) );
 		}
+
+		if ( isset( $_POST['file']['downloadFormat'] ) ) {
+			$downloadFormat = sanitize_text_field( wp_unslash( $_POST['file']['downloadFormat'] ?? '' ) );
+		} else {
+			$downloadFormat = strtolower( wp_check_filetype( $_POST['file']['fileName'] )['ext'] );
 		}
 
 		$pixxio_id  = (int) $_POST['file']['id'];
@@ -214,6 +219,10 @@ class MediaHandler extends Singleton {
 				array(
 					'key'   => 'pixxio_mediaspace',
 					'value' => $mediaspace,
+				),
+				array(
+					'key'   => 'pixxio_downloadFormat',
+					'value' => $downloadFormat,
 				),
 			),
 		);
@@ -249,6 +258,7 @@ class MediaHandler extends Singleton {
 				update_post_meta( $attachment_id, 'pixxio_id', $pixxio_id );
 				update_post_meta( $attachment_id, 'pixxio_import_gmt', $timestamp );
 				update_post_meta( $attachment_id, 'pixxio_mediaspace', $mediaspace );
+				update_post_meta( $attachment_id, 'pixxio_downloadFormat', $downloadFormat );
 			}
 		}
 
@@ -275,7 +285,7 @@ class MediaHandler extends Singleton {
 	public static function add_attachment_json_pixxio_meta( $response, $attachment, $meta ) {
 		$meta = get_metadata( 'post', $attachment->ID, '', true );
 		if ( ! empty( $meta['pixxio_id'] ) ) {
-			$keys = array( 'pixxio_id', 'pixxio_mediaspace', 'pixxio_import_gmt' );
+			$keys = array( 'pixxio_id', 'pixxio_mediaspace', 'pixxio_downloadFormat', 'pixxio_import_gmt' );
 			foreach ( $keys as $key ) {
 				$response[ $key ] = is_numeric( $meta[ $key ][0] ) ? (int) $meta[ $key ][0] : $meta[ $key ][0];
 			}
