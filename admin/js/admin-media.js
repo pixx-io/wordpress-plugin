@@ -175,9 +175,21 @@ global ajaxurl, CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess, XMLSerialize
 		}
 	} );
 
+	function frameIsCurrent( frameEl ) {
+		return (
+			frameEl &&
+			frameEl?.contentWindow &&
+			frameEl.offsetParent &&
+			( frameEl.isConnected === undefined ||
+				frameEl.isConnected === true )
+		);
+	}
+
 	function pxSDK() {
-		if ( ! pixxioSdk || ! pixxioSdk?.contentWindow ) {
-			pixxioSdk = document.querySelector( 'iframe#pixxio_sdk' );
+		if ( ! frameIsCurrent( pixxioSdk ) ) {
+			pixxioSdk = Array.from(
+				document.querySelectorAll( 'iframe#pixxio_sdk' )
+			).filter( frameIsCurrent )?.[ 0 ];
 		}
 
 		if ( ! pixxioSdk ) {
