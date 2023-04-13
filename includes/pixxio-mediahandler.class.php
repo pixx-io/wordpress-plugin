@@ -173,11 +173,29 @@ class MediaHandler extends Singleton {
 	 */
 	public static function download_pixxio_image_ajax_handler() {
 		// Check for permissions and validate the nonce
-		if ( ! current_user_can( 'upload_files' ) || ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'download_pixxio_image' ) ) {
-			wp_send_json_error( 'Permission denied' );
+		if (
+			! current_user_can( 'upload_files' ) ||
+			! isset( $_POST['nonce'] ) ||
+			! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'download_pixxio_image' )
+		) {
+			wp_send_json_error( __( 'Permission denied', 'pixxio' ) );
 		}
 
-		// @TODO: check required parameters
+		// check required parameters
+		if (
+			! isset( $_POST['file'] ) ||
+			! is_array( $_POST['file'] ) ||
+			! isset( $_POST['file']['id'] ) ||
+			empty( $_POST['file']['id'] ) ||
+			! isset( $_POST['file']['fileName'] ) ||
+			empty( $_POST['file']['fileName'] ) ||
+			! isset( $_POST['file']['downloadURL'] ) ||
+			empty( $_POST['file']['downloadURL'] )
+		) {
+			wp_send_json_error( __( 'Invalid download request', 'pixxio' ) );
+		}
+		}
+
 		$pixxio_id  = (int) $_POST['file']['id'];
 		$image_url  = esc_url_raw( $_POST['file']['downloadURL'] );
 		$mediaspace = parse_url( $image_url, PHP_URL_HOST );
