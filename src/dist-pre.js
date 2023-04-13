@@ -10,7 +10,7 @@ if (!fs.existsSync(mainFile)) {
 }
 
 let contents = fs.readFileSync(mainFile, 'utf8');
-contents = contents.replace(/(Version:\s*)([\d.]+)/i, `$1${packageJson.version}`);
+contents = contents.replace(/(Version:\s*)([\d.]+)(-[^\n]+)?/i, `$1${packageJson.version}`);
 fs.writeFileSync(mainFile, contents);
 
 console.log( `✔️  Wrote plugin header version to ${mainFile} from package.json` );
