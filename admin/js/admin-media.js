@@ -1,5 +1,5 @@
 /*
-global CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess
+global ajaxurl, CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess, XMLSerializer
 */
 ( function ( $ ) {
 	const commonFrame = {
@@ -140,7 +140,7 @@ global CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess
 
 				compat.before( metaFragment );
 
-				const serializer = new XMLSerializer(); // eslint-disable-line no-undef
+				const serializer = new XMLSerializer();
 				return serializer.serializeToString( fragment );
 			},
 		} );
@@ -292,7 +292,7 @@ global CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess
 				return xhr;
 			},
 			type: 'POST',
-			url: ajaxurl, // eslint-disable-line no-undef
+			url: ajaxurl,
 			data: {
 				action: 'download_pixxio_image',
 				file,
