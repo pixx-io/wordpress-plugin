@@ -26,7 +26,7 @@ Linting is only run automatically when using `npm run dist`, but should be run f
 
 ## Bundling / Packaging / Distribution
 
-There's currently no bundling process involved as we're using vanilla JavaScript (with the exception of jQuery.ajax() for simplicity, as it's ). However, there are some scripts involved for creating the distribution .zip file by running
+There's currently no bundling process involved as we're using vanilla JavaScript (with the exception of jQuery.ajax() for simplicity). However, there are some scripts involved for creating the distribution .zip file by running
 
 ```shell
 npm run pack
