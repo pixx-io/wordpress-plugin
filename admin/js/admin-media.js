@@ -2,6 +2,8 @@
 global ajaxurl, CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess, XMLSerializer
 */
 ( function ( $ ) {
+	let pxCurrentFrame = null;
+
 	const commonFrame = {
 		initialize() {
 			const pxState = wp.media.controller.State.extend( {
@@ -42,6 +44,13 @@ global ajaxurl, CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess, XMLSerialize
 			const view = new pixxioContent();
 
 			this.content.set( view );
+
+			pxCurrentFrame = this;
+			
+			const library = pxCurrentFrame.state()?.get('library');
+			if ( library && ! library.length ) {
+				library?.more();
+			}
 		},
 	};
 	// add class in Library view
@@ -324,6 +333,7 @@ global ajaxurl, CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess, XMLSerialize
 				progressData.processedFiles++;
 				const allFilesFinished =
 					progressData.processedFiles >= progressData.totalFiles;
+				const attachmentData = data?.data;
 
 				if ( allFilesFinished ) {
 					clearInterval( progressData.fakeInterval );
@@ -335,29 +345,53 @@ global ajaxurl, CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess, XMLSerialize
 				}
 
 				if ( data.success ) {
-					wp.Uploader.queue.add( data.data );
+					
+					if( ! attachmentData._existed ) {
+						wp.Uploader.queue.add( attachmentData );
+					}
+
 					if (
 						mediaItems &&
-						data.data._returnMediaItemUrl &&
+						attachmentData._returnMediaItemUrl &&
 						! mediaItems.querySelector(
-							'#media-item-' + data.data.id
+							'#media-item-' + attachmentData.id
 						)
 					) {
 						const fileObj = {
-							id: data.data.id,
-							name: data.data.filename,
+							id: attachmentData.id,
+							name: attachmentData.filename,
 						};
 						fileQueued( fileObj );
-						uploadSuccess( fileObj, data.data.id );
+						uploadSuccess( fileObj, attachmentData.id );
 					}
 				} else {
 					// eslint-disable-next-line no-console
 					console.error( data );
-					const fileError = `${ file.fileName }: ${ data.data }`;
+					const fileError = `${ file.fileName }: ${ attachmentData }`;
 					downloadErrors.push( fileError );
 					// @TODO: downloadErrors.join("\n")
 					// once multiple messages are supported
 					pxSend( 'showError', [ fileError ] );
+				}
+
+				if ( pxCurrentFrame ) {
+					const library = pxCurrentFrame.state().get( 'library' );
+					let attachment = library.get( attachmentData.id );
+					if ( ! attachment ) {
+						attachment = library.add( attachmentData, { merge: true, at: 0 } );
+					}
+					
+					if ( allFilesFinished && ! downloadErrors.length ) {
+						pxCurrentFrame?.content.mode('browse');
+						const attElSelector = `.attachment[data-id="${ parseInt( attachmentData.id ) }"]`;
+						window.setTimeout(() => {
+							pxCurrentFrame.content.get()?.$el.get(0)?.querySelector( attElSelector )?.scrollIntoView();
+						}, 1);
+					} else if ( downloadErrors.length ) {
+						pxCurrentFrame?.state()?.get('selection')?.reset();
+					}
+
+					pxCurrentFrame.state().get( 'selection' ).add( attachment, { merge: true } );
 				}
 			},
 		} );
