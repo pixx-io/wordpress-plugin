@@ -46,8 +46,8 @@ global ajaxurl, CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess, XMLSerialize
 			this.content.set( view );
 
 			pxCurrentFrame = this;
-			
-			const library = pxCurrentFrame.state()?.get('library');
+
+			const library = pxCurrentFrame.state()?.get( 'library' );
 			if ( library && ! library.length ) {
 				library?.more();
 			}
@@ -345,8 +345,7 @@ global ajaxurl, CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess, XMLSerialize
 				}
 
 				if ( data.success ) {
-					
-					if( ! attachmentData._existed ) {
+					if ( ! attachmentData._existed ) {
 						wp.Uploader.queue.add( attachmentData );
 					}
 
@@ -378,20 +377,34 @@ global ajaxurl, CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess, XMLSerialize
 					const library = pxCurrentFrame.state().get( 'library' );
 					let attachment = library.get( attachmentData.id );
 					if ( ! attachment ) {
-						attachment = library.add( attachmentData, { merge: true, at: 0 } );
-					}
-					
-					if ( allFilesFinished && ! downloadErrors.length ) {
-						pxCurrentFrame?.content.mode('browse');
-						const attElSelector = `.attachment[data-id="${ parseInt( attachmentData.id ) }"]`;
-						window.setTimeout(() => {
-							pxCurrentFrame.content.get()?.$el.get(0)?.querySelector( attElSelector )?.scrollIntoView();
-						}, 1);
-					} else if ( downloadErrors.length ) {
-						pxCurrentFrame?.state()?.get('selection')?.reset();
+						attachment = library.add( attachmentData, {
+							merge: true,
+							at: 0,
+						} );
 					}
 
-					pxCurrentFrame.state().get( 'selection' ).add( attachment, { merge: true } );
+					if ( allFilesFinished && ! downloadErrors.length ) {
+						pxCurrentFrame?.content.mode( 'browse' );
+						const attElSelector = `.attachment[data-id="${ parseInt(
+							attachmentData.id
+						) }"]`;
+						window.setTimeout( () => {
+							pxCurrentFrame.content
+								.get()
+								?.$el.get( 0 )
+								?.querySelector( attElSelector )
+								?.scrollIntoView();
+						}, 1 );
+					} else if ( downloadErrors.length ) {
+						pxCurrentFrame?.state()?.get( 'selection' )?.reset();
+					}
+
+					pxCurrentFrame
+						?.state()
+						?.get( 'selection' )
+						.add( attachment, {
+							merge: true,
+						} );
 				}
 			},
 		} );

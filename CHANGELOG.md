@@ -1,6 +1,14 @@
 # Change Log
 
-## 0.1.7 (WIP)
+## 2.0.0 (first publix release)
+
+### Features
+
+* append supported file format parameters to SDK URL
+* switch to media library after successful upload in page/post context
+* implement error handling
+
+## 0.1.7
 
 ### Bug Fixes
 
