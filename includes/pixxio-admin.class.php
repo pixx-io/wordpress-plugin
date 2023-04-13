@@ -52,9 +52,10 @@ class Admin extends Singleton {
 			array( self::class, 'editor_show_meta' )
 		);
 	}
-
+	
 	/**
-	 * Adds the "import from pixx.io" tab content
+	 * Adds the "import from pixx.io" tab and
+	 * media metadata content
 	 *
 	 * @since 2.0.0
 	 *
@@ -71,8 +72,34 @@ class Admin extends Singleton {
 
 		$iframe_url = add_query_arg( array(
 			'applicationId' => 'eS9Pb3S5bsEa2Z6527lUwUBp8',
+			'selectButtonText' => __( 'Import to Media Library', 'pixxio' ),
 			'multiSelect' => 'true',
 		), 'https://plugin.pixx.io/static/v0/' . $iframe_lang . '/media' );
+
+		$allowedFileTypes = urlencode_deep(
+			array(
+				'jpg',
+				'png',
+				'tiff',
+				'heic',
+			)
+		);
+
+		$allowedDownloadFormats = urlencode_deep(
+			array(			
+				'png',
+				'jpg',
+				'preview'
+			)
+		);
+
+		foreach ( $allowedFileTypes as $fileType ) {
+			$iframe_url .= '&allowedFileTypes=' . $fileType;
+		}
+
+		foreach ( $allowedDownloadFormats as $downloadFormat ) {
+			$iframe_url .= '&allowedDownloadFormats='. $downloadFormat;
+		}
 		?>
 		<script type="text/html" id="tmpl-pixxio-content">
 		<iframe id="pixxio_sdk" src="<?php echo esc_url( $iframe_url ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>" width="100%" height="100%"></iframe>
