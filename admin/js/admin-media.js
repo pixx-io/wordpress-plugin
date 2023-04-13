@@ -288,7 +288,7 @@ global ajaxurl, CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess, XMLSerialize
 							}
 						} else {
 							progressData.fileProgress.set( file, 100 );
-							jAjax.success( lastResponse, ...arguments );
+							jAjax.fileProcessed( lastResponse, ...arguments );
 						}
 					},
 					false
@@ -304,17 +304,21 @@ global ajaxurl, CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess, XMLSerialize
 				returnMediaItem: !! mediaItems,
 				nonce: pxSDK().dataset.nonce,
 			},
-			success( data ) {
+			// we don't use the default success()
+			// because otherwise it might be fired twice
+			fileProcessed( data ) {
 				progressData.processedFiles++;
 				const allFilesFinished =
-					progressData.processedFiles >= progressData.totalFiles;
-				pxSend( 'setDownloadProgress', [
-					calculateProgress( progressData ),
-				] );
+				progressData.processedFiles >= progressData.totalFiles;
+				console.log( { data, progressData, allFilesFinished }, progressData.processedFiles, progressData.totalFiles );
 
 				if ( allFilesFinished ) {
 					clearInterval( progressData.fakeInterval );
 					pxSend( 'setDownloadComplete' );
+				} else {
+					pxSend( 'setDownloadProgress', [
+						calculateProgress( progressData ),
+					] );
 				}
 
 				if ( data.success ) {
