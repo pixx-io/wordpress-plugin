@@ -93,6 +93,13 @@ class Admin extends Singleton {
 			)
 		);
 
+		// check SVG support and add parameters
+		$allowedExtensions = array_keys( get_allowed_mime_types() );
+		if ( in_array( 'svg' , $allowedExtensions ) ) {
+			$allowedFileTypes[] = 'svg';
+			$allowedDownloadFormats[] = 'svg';
+		}
+
 		foreach ( $allowedFileTypes as $fileType ) {
 			$iframe_url .= '&allowedFileTypes=' . $fileType;
 		}
