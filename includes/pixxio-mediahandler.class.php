@@ -80,7 +80,7 @@ class MediaHandler extends Singleton {
 			}
 			if ( ! defined( 'PROGRESS_BUFFER_SENT' ) ) {
 				// fill buffer to minimum size for flushing
-				echo random_bytes( 64 * 1024 + 1 );
+				echo random_bytes( 64 * 1024 + 1 ) . "\n";
 				define( 'PROGRESS_BUFFER_SENT', true );
 				ob_flush();
 				flush();
