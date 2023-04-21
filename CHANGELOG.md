@@ -1,6 +1,6 @@
 # Change Log
 
-## 2.0.0 (first publix release)
+## 2.0.0 (first public release)
 
 ### Features
 

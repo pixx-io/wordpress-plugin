@@ -1,14 +1,14 @@
 {
   "name": "pixxio",
-  "version": "2.0.0-rc2",
+  "version": "2.0.0",
   "description": "The official WordPress plugin for pixx.io. Bring Digital Asset Management to your WordPress sites by importing assets into your media library.",
   "author": "48DESIGN GmbH",
   "license": "GPL-2.0-or-later",
   "keywords": [],
   "homepage": "https://www.pixx.io",
-  "repository": "https://github.com/48design/wp-pixxio",
-  "bugs": "https://www.pixx.io/kontakt",
-  "devDependencies": {
+  "repository": "https://github.com/pixx-io/wordpress-plugin",
+  "bugs": "https://github.com/pixx-io/wordpress-plugin/issues",
+  "dependencies": {
     "@wordpress/scripts": "^26.1.0",
     "adm-zip": "^0.5.10"
   },
