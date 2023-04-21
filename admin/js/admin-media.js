@@ -384,7 +384,11 @@ global ajaxurl, CSS, fileQueued, jQuery, pixxioI18n, uploadSuccess, XMLSerialize
 					}
 
 					if ( allFilesFinished && ! downloadErrors.length ) {
-						pxCurrentFrame?.content.mode( 'browse' );
+						if ( pxCurrentFrame?._pixxioExclusive ) {
+							pxCurrentFrame.close();
+						} else {
+							pxCurrentFrame?.content.mode( 'browse' );
+						}
 						const attElSelector = `.attachment[data-id="${ parseInt(
 							attachmentData.id
 						) }"]`;
