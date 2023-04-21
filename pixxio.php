@@ -3,7 +3,6 @@
  * Plugin Name: pixx.io
  * Version: 2.0.0
  * Description: The official WordPress plugin for pixx.io. Bring Digital Asset Management to your WordPress sites by importing assets into your media library.
- * Plugin URI: https://www.pixx.io/
  * Author: pixx.io GmbH
  * Author URI: https://www.pixx.io/
  * Text Domain: pixxio
