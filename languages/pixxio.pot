@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: pixx.io\n"
-"POT-Creation-Date: 2023-04-05 18:05+0200\n"
+"POT-Creation-Date: 2023-04-21 09:43+0200\n"
 "PO-Revision-Date: 2023-04-03 15:42+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -28,40 +28,57 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-7: languages\n"
 "X-Poedit-SearchPathExcluded-8: src\n"
 
+#: includes/pixxio-admin.class.php:75
+msgid "Import to Media Library"
+msgstr ""
+
 #. Plugin Name of the plugin/theme
-#: includes/pixxio-admin.class.php:61 includes/pixxio-admin.class.php:92
+#: includes/pixxio-admin.class.php:116 includes/pixxio-admin.class.php:142
 msgid "pixx.io"
 msgstr ""
 
-#: includes/pixxio-admin.class.php:63 includes/pixxio-admin.class.php:94
+#: includes/pixxio-admin.class.php:118 includes/pixxio-admin.class.php:144
 msgid "Media space:"
 msgstr ""
 
-#: includes/pixxio-admin.class.php:66 includes/pixxio-admin.class.php:96
+#: includes/pixxio-admin.class.php:120 includes/pixxio-admin.class.php:147
 msgid "ID:"
 msgstr ""
 
-#: includes/pixxio-admin.class.php:67 includes/pixxio-admin.class.php:97 includes/pixxio-mediahandler.class.php:294
+#: includes/pixxio-admin.class.php:121 includes/pixxio-admin.class.php:148 includes/pixxio-mediahandler.class.php:330
 msgid "View in media space"
 msgstr ""
 
-#: includes/pixxio-admin.class.php:124
+#: includes/pixxio-admin.class.php:122 includes/pixxio-admin.class.php:150
+msgid "Format:"
+msgstr ""
+
+#: includes/pixxio-admin.class.php:177 includes/pixxio-admin.class.php:208
 msgid "Import from pixx.io"
 msgstr ""
 
-#: includes/pixxio-mediahandler.class.php:99
+#: includes/pixxio-mediahandler.class.php:108
 msgid "Invalid image URL"
 msgstr ""
 
-#: includes/pixxio-mediahandler.class.php:106
+#: includes/pixxio-mediahandler.class.php:115
 msgid "Error creating temporary file"
 msgstr ""
 
-#: includes/pixxio-mediahandler.class.php:123
+#: includes/pixxio-mediahandler.class.php:132
 msgid "Error downloading image"
 msgstr ""
 
+#: includes/pixxio-mediahandler.class.php:181
+msgid "Permission denied"
+msgstr ""
+
+#: includes/pixxio-mediahandler.class.php:195
+msgid "Invalid download request"
+msgstr ""
+
 #. Plugin URI of the plugin/theme
+#. Author URI of the plugin/theme
 msgid "https://www.pixx.io/"
 msgstr ""
 
@@ -70,9 +87,5 @@ msgid "The official WordPress plugin for pixx.io. Bring Digital Asset Management
 msgstr ""
 
 #. Author of the plugin/theme
-msgid "48DESIGN GmbH"
-msgstr ""
-
-#. Author URI of the plugin/theme
-msgid "https://48design.com"
+msgid "pixx.io GmbH"
 msgstr ""

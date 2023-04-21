@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: pixx.io\n"
-"POT-Creation-Date: 2023-04-05 18:05+0200\n"
-"PO-Revision-Date: 2023-04-05 18:05+0200\n"
+"POT-Creation-Date: 2023-04-21 09:42+0200\n"
+"PO-Revision-Date: 2023-04-21 09:43+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -29,41 +29,58 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-7: languages\n"
 "X-Poedit-SearchPathExcluded-8: src\n"
 
+#: includes/pixxio-admin.class.php:75
+msgid "Import to Media Library"
+msgstr "In Mediathek importieren"
+
 #. Plugin Name of the plugin/theme
-#: includes/pixxio-admin.class.php:61 includes/pixxio-admin.class.php:92
+#: includes/pixxio-admin.class.php:116 includes/pixxio-admin.class.php:142
 msgid "pixx.io"
 msgstr "pixx.io"
 
-#: includes/pixxio-admin.class.php:63 includes/pixxio-admin.class.php:94
+#: includes/pixxio-admin.class.php:118 includes/pixxio-admin.class.php:144
 msgid "Media space:"
 msgstr "Mediaspace:"
 
-#: includes/pixxio-admin.class.php:66 includes/pixxio-admin.class.php:96
+#: includes/pixxio-admin.class.php:120 includes/pixxio-admin.class.php:147
 msgid "ID:"
 msgstr "ID:"
 
-#: includes/pixxio-admin.class.php:67 includes/pixxio-admin.class.php:97
-#: includes/pixxio-mediahandler.class.php:294
+#: includes/pixxio-admin.class.php:121 includes/pixxio-admin.class.php:148
+#: includes/pixxio-mediahandler.class.php:330
 msgid "View in media space"
 msgstr "Im Mediaspace ansehen"
 
-#: includes/pixxio-admin.class.php:124
+#: includes/pixxio-admin.class.php:122 includes/pixxio-admin.class.php:150
+msgid "Format:"
+msgstr "Format:"
+
+#: includes/pixxio-admin.class.php:177 includes/pixxio-admin.class.php:208
 msgid "Import from pixx.io"
 msgstr "Von pixx.io importieren"
 
-#: includes/pixxio-mediahandler.class.php:99
+#: includes/pixxio-mediahandler.class.php:108
 msgid "Invalid image URL"
 msgstr "Ungültige Bild-URL"
 
-#: includes/pixxio-mediahandler.class.php:106
+#: includes/pixxio-mediahandler.class.php:115
 msgid "Error creating temporary file"
 msgstr "Fehler beim Erstellen einer temporären Datei"
 
-#: includes/pixxio-mediahandler.class.php:123
+#: includes/pixxio-mediahandler.class.php:132
 msgid "Error downloading image"
 msgstr "Fehler beim Herunterladen des Bildes"
 
+#: includes/pixxio-mediahandler.class.php:181
+msgid "Permission denied"
+msgstr "Zugriff verweigert"
+
+#: includes/pixxio-mediahandler.class.php:195
+msgid "Invalid download request"
+msgstr "Ungültige Download-Anfrage"
+
 #. Plugin URI of the plugin/theme
+#. Author URI of the plugin/theme
 msgid "https://www.pixx.io/"
 msgstr "https://www.pixx.io/"
 
@@ -77,9 +94,11 @@ msgstr ""
 "importierst."
 
 #. Author of the plugin/theme
-msgid "48DESIGN GmbH"
-msgstr "48DESIGN GmbH"
+msgid "pixx.io GmbH"
+msgstr "pixx.io GmbH"
 
-#. Author URI of the plugin/theme
-msgid "https://48design.com"
-msgstr "https://www.48design.com/de/"
+#~ msgid "48DESIGN GmbH"
+#~ msgstr "48DESIGN GmbH"
+
+#~ msgid "https://48design.com"
+#~ msgstr "https://www.48design.com/de/"
