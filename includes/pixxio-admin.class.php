@@ -74,7 +74,7 @@ class Admin extends Singleton {
 			'applicationId' => 'eS9Pb3S5bsEa2Z6527lUwUBp8',
 			'selectButtonText' => __( 'Import to Media Library', 'pixxio' ),
 			'multiSelect' => 'true',
-		), 'https://plugin.pixx.io/static/v0/' . $iframe_lang . '/media' );
+		), 'https://plugin.pixx.io/static/v1/' . $iframe_lang . '/media' );
 
 		$allowedFileTypes = urlencode_deep(
 			array(
