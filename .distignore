@@ -1,0 +1,7 @@
+dist
+.vscode
+.github
+.gitignore
+node_modules
+.DS_Store
+DEVELOPMENT.md
