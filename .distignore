@@ -4,6 +4,8 @@
 /.git
 /.github
 /node_modules
+
+.distignore
 .gitignore
 .DS_Store
 DEVELOPMENT.md
