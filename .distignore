@@ -1,7 +1,9 @@
-dist
-.vscode
-.github
+/dist
+/.vscode
+/.wordpress-org
+/.git
+/.github
+/node_modules
 .gitignore
-node_modules
 .DS_Store
 DEVELOPMENT.md

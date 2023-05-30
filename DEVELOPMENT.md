@@ -24,7 +24,27 @@ To trigger autoformat for PHP files, after following the installation instructio
 
 Linting is only run automatically when using `npm run dist`, but should be run from time to time to make sure we adhere to the WordPress coding standards.
 
-## Bundling / Packaging / Distribution
+## Release a new version
+
+1. Update `CHANGELOG.md`
+2. Update the version in `package.json` and run `npm i`
+3. Update the version in `pixx-io.php`
+4. Merge the changes in the `master` branch
+5. Create a new tag on the `master` branch: `git tag 2.0.1 && git push origin --tags`
+6. A Github workflow starts which copies the new files to the wordpress plugin SVN
+
+## Update readme.txt or (marketing) assets without a new release
+
+- Update the files in `/assets` or the `readme.txt`.
+- Create a new branch
+- Merge the branch into the `master` branch
+- A Github workflow starts and updates the Assets and readme.txt in the plugin directory
+
+## Creating a ZIP-File - OUTDATED
+
+Use these script only for preview purposes.
+
+### Bundling / Packaging / Distribution
 
 There's currently no bundling process involved as we're using vanilla JavaScript (with the exception of jQuery.ajax() for simplicity). However, there are some scripts involved for creating the distribution .zip file by running
 
