@@ -8,5 +8,5 @@
 .distignore
 .gitignore
 .DS_Store
-DEVELOPMENT.md
+development.md
 .wordpress-version-checker.json
