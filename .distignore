@@ -9,3 +9,4 @@
 .gitignore
 .DS_Store
 DEVELOPMENT.md
+.wordpress-version-checker.json
