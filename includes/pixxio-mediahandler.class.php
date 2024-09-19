@@ -63,7 +63,7 @@ class MediaHandler extends Singleton {
 	 * @param double $uploaded_size
 	 * @return void
 	 */
-	function downloadProgress( $resource, $download_size, $downloaded_size, $upload_size, $uploaded_size ) {
+	public static function downloadProgress( $resource, $download_size, $downloaded_size, $upload_size, $uploaded_size ) {
 		static $previousProgress = 0;
 
 		if ( $download_size == 0 ) {
