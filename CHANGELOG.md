@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.1
+
+### Bug Fixes
+
+* Fix static PHP error when downloading images
+
 ## 2.0.0 (first public release)
 
 ### Features
