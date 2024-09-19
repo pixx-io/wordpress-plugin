@@ -27,6 +27,7 @@ Linting is only run automatically when using `npm run dist`, but should be run f
 ## Release a new version
 
 1. Update `CHANGELOG.md`
+1. Update `readme.txt`
 2. Update the version in `package.json` and run `npm i`
 3. Update the version in `pixx-io.php`
 4. Merge the changes in the `master` branch
