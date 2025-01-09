@@ -2,7 +2,7 @@
 Contributors: pixxio
 Tags: pixxio, pixx, DAM, Digital Asset Management
 Requires at least: 6.0
-Tested up to: 6.6.2
+Tested up to: 6.7
 Stable tag: 2.0.1
 Requires PHP: 7.4
 License: GPLv2 or later
